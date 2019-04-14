@@ -18,4 +18,4 @@ PKGDIR="/usr/portage/packages"
 LC_MESSAGES=C
 
 GENTOO_MIRRORS="https://mirrors.163.com/gentoo/ http://mirrors.163.com/gentoo/ https://mirrors.tuna.tsinghua.edu.cn/gentoo"
-USE="X -alsa -video_cards_intel -video_cards_nouveau"
+USE="-alsa -video_cards_intel -video_cards_nouveau"
