@@ -16,7 +16,6 @@ scriptencoding utf-8
 " The following are some sensible defaults for Vim for most users.
 " We attempt to change as little as possible from Vim's defaults,
 " deviating only where it makes sense
-set smartindent
 set nocompatible        " Use Vim defaults (much better!)
 set bs=2                " Allow backspacing over everything in insert mode
 set ai                  " Always set auto-indenting on
@@ -24,20 +23,16 @@ set history=50          " keep 50 lines of command history
 set ruler               " Show the cursor position all the time
 set nu
 set viminfo='20,\"500   " Keep a .viminfo file.
-set autoindent
 set cindent
 set tabstop=4
-set softtabstop=4
 set shiftwidth=4
+set softtabstop=-1
+set noexpandtab
 set gdefault
 set noerrorbells
-nnoremap j k
-nnoremap k j
-inoremap ' ''<Left>
-inoremap " ""<Left>
-inoremap ( ()<Left>
-inoremap [ []<Left>
-inoremap { {}<Left>
+nnoremap j h
+nnoremap l j
+nnoremap ; l
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
@@ -133,7 +128,7 @@ if isdirectory(expand("$VIMRUNTIME/ftplugin"))
   " Uncomment the next line (or copy to your ~/.vimrc) for plugin-provided
   " indent settings. Some people don't like these, so we won't turn them on by
   " default.
-  " filetype indent on
+filetype indent on
 endif
 " }}}
 
