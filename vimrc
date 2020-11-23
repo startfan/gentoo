@@ -30,6 +30,7 @@ set softtabstop=-1
 set noexpandtab
 set gdefault
 set noerrorbells
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 nnoremap j h
 nnoremap l j
 nnoremap ; l
