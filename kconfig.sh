@@ -1,6 +1,6 @@
 #!/bin/bash
 #使用方式：（脚本名）（linux源码顶层目录）（config 配置选项名）
-a=$(find $1 -name "Kconfig"|xargs grep -in "$2"|awk -F":" 'NR==1 {print $1,$2}')
+a=$(find $1 -name "Kconfig"|xargs grep -inw -E "config $2|menuconfig $2"|awk -F":" 'NR==1 {print $1,$2}')
 echo $a
 #搜索所有Kconfig找到匹配选项
 b=${a% *}
@@ -18,7 +18,6 @@ f=${e%:*}
 #f:筛选e
 g=$(expr $c + $d)
 #g:把需要查找的config行数与help行数相加得到绝对行数
-#j=$(expr $f - $d)
 #d=$(($d+1))
 #sed -n "$c,($d)p" $b
 tail -n +$c $b|head -n $d
