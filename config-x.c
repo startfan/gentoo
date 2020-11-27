@@ -28,5 +28,7 @@ int main(int argc,char* argv[])
 				fputc(d,e);
 			}
 		}while(1);
+	fclose(a);
+	fclose(e);
 	return 0;
 }
