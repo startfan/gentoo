@@ -7,7 +7,8 @@ b=${a% *}
 #echo $b
 c=${a#* }
 #echo $c
-#c:筛选grep找到的目录
+#b:筛选grep找到的目录
+#c:筛选grep找到的行数
 d=$(tail -n +$c $b|head -n 100|grep -in  "help"|awk -F ":" 'NR==1 {print $1}')
 #echo $g
 #d:确定help所在行(相对config行数）
