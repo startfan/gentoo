@@ -1,0 +1,24 @@
+编译和安装
+
+当配置完成，是时间来编译和安装内核了。退出配置并开始编译过程：
+root #make && make modules_install
+附注
+还可以启用并行生成使用make -jX，X是一个生成过程中所允许运行的并行任务的整数。这类似于早期有关/etc/portage/make.conf的中关于MAKEOPTS变量的介绍。
+
+当内核完成编译，复制内核镜像到/boot/。这由make install命令来处理：
+root #make install
+
+这将复制内核镜像到/boot/，一起的还有System.map文件和内核配置文件。
+
+
+可选：生成一个initramfs
+
+在某些情况中需要建立一个initramfs——一个基于内存的初始化文件系统。最觉的原因是当重要的文件系统位置（如/usr/或/var/）在分离的分区。通过一个initramfs，这些分区可以使用initramfs里面的工具来完成挂载。
+
+如果没有initramfs的，存在着巨大的风险，系统将无法正常开机，因为这是负责安装的文件系统工具需要驻留在这些文件系统的信息。 initramfs中的一个将在必要的文件拉进它的内核启动之后使用的档案，但控制被移交前转移到初始化工具。在initramfs的脚本，然后将确保分区正确地安装在系统继续启动之前。
+
+要安装一个initramfs，首先安装sys-kernel/genkernel，然后用它生成一个initramfs：
+root #emerge --ask sys-kernel/genkernel
+root #genkernel --install initramfs
+--kernel-config=/path/to/kernel.config
+--kerneldir=/path/to/sources/
