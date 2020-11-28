@@ -15,16 +15,16 @@ int main(int argc,char* argv[])
 		return 2;
 	};
 	fseek(a,0,SEEK_END);
-	b=ftell(a);
+	b=ftell(a);//确定文件长度
 	rewind(a);
 	do
 		{
 			d=fgetc(a);
-			if(d!='\n')c=0;
-			else c++;
+			if(d!='\n')c=0;//读到非'\n'字符就清零'\n'数量
+			else c++;//如果字符为‘\n’就计数确定'\n'数量
 			if(feof(a))break;
 			if(d>='A'&&d<='Z'||d=='_'||d=='\n'){
-				if(c>1)continue;
+				if(c>1)continue;//如果超过一个换行符就直接读取下个字符
 				fputc(d,e);
 			}
 		}while(1);
