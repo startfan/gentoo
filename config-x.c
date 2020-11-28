@@ -5,7 +5,8 @@ int main(int argc,char* argv[])
 	FILE* e;
 	int d,b;
 	int c=0;
-	if(argc<4)puts("Eliminate Config redundant newline characters, leaving only the configuration name.");
+	puts("(file a)(output file)");
+	if(argc!=3)puts("Eliminate Config redundant newline characters, leaving only the configuration name.");
 	if((a=fopen(argv[1],"r"))==NULL){
 		puts("read error");
 		return 1;
