@@ -7,21 +7,22 @@ U-Boot on Rockchip
 ==================
 
 A wide range of Rockchip SoCs are supported in mainline U-Boot
-
+主线U-Boot支持各种Rockchip SoC
 Warning
 =======
-This document is being moved to doc/board/rockchip, so information on it
-might be incomplete or outdated.
-
+This document is being moved to doc/board/rockchip, so information on it might be incomplete or outdated.
+该文档已移至doc / board / rockchip，因此其相关信息可能不完整或已过时。
 Prerequisites
 =============
 
 You will need:
 
    - Firefly RK3288 board or something else with a supported RockChip SoC
+   Firefly RK3288板或其他受支持的RockChip SoC
    - Power connection to 5V using the supplied micro-USB power cable
-   - Separate USB serial cable attached to your computer and the Firefly
-        (connect to the micro-USB connector below the logo)
+使用随附的micro-USB电源线将电源连接到5V
+   - Separate USB serial cable attached to your computer and the Firefly(connect to the micro-USB connector below the logo)
+   单独的USB串行电缆连接到计算机和Firefly（连接到徽标下方的micro-USB连接器）
    - rkflashtool [3]
    - openssl (sudo apt-get install openssl)
    - Serial UART connection [4]
@@ -130,40 +131,39 @@ Building
 Writing to the board with USB
 =============================
 
-For USB to work you must get your board into ROM boot mode, either by erasing
-your MMC or (perhaps) holding the recovery button when you boot the board.
+For USB to work you must get your board into ROM boot mode, either by erasing your MMC or (perhaps) holding the recovery button when you boot the board.
+为了使USB正常工作，必须通过擦除MMC或（也许）在启动电路板时按住恢复按钮，使电路板进入ROM引导模式。
 To erase your MMC, you can boot into Linux and type (as root)
-
+要擦除您的MMC，您可以启动Linux并输入（以root用户身份）
    dd if=/dev/zero of=/dev/mmcblk0 bs=1M
 
 Connect your board's OTG port to your computer.
 
 To create a suitable image and write it to the board:
-
+要创建合适的图像并将其写入板子：
    ./firefly-rk3288/tools/mkimage -n rk3288 -T rkimage -d \
 	./firefly-rk3288/spl/u-boot-spl-dtb.bin out && \
    cat out | openssl rc4 -K 7c4e0304550509072d2c7b38170d1711 | rkflashtool l
 
 If all goes well you should something like:
-
+如果一切顺利，您应该执行以下操作：
    U-Boot SPL 2015.07-rc1-00383-ge345740-dirty (Jun 03 2015 - 10:06:49)
    Card did not respond to voltage select!
    spl: mmc init failed with error: -17
    ### ERROR ### Please RESET the board ###
 
-You will need to reset the board before each time you try. Yes, that's all
-it does so far. If support for the Rockchip USB protocol or DFU were added
-in SPL then we could in principle load U-Boot and boot to a prompt from USB
-as several other platforms do. However it does not seem to be possible to
-use the existing boot ROM code from SPL.
-
+You will need to reset the board before each time you try. Yes, that's all it does so far. 
+每次尝试之前，您都需要重置主板。是的，到目前为止仅此而已。
+If support for the Rockchip USB protocol or DFU were added in SPL then we could in principle load U-Boot and boot to a prompt from USB as several other platforms do. 
+如果在SPL中添加了对Rockchip USB协议或DFU的支持，则原则上我们可以像其他几个平台一样加载U-Boot并从USB引导到提示符。
+However it does not seem to be possible to use the existing boot ROM code from SPL.
+但是，似乎无法使用SPL中的现有引导ROM代码。
 
 Writing to the eMMC with USB on ROC-RK3308-CC
+在ROC-RK3308-CC上通过USB写入eMMC
 =============================================
-For USB to work you must get your board into Bootrom mode,
-either by erasing the eMMC or short circuit the GND and D0
-on core board.
-
+For USB to work you must get your board into Bootrom mode,either by erasing the eMMC or short circuit the GND and D0 on core board.
+为了使USB正常工作，必须通过擦除eMMC或将核心板上的GND和D0短路来使板进入Bootrom模式。
 Connect the board to your computer via tyepc.
 => rkdeveloptool db rk3308_loader_v1.26.117.bin
 => rkdeveloptool wl 0x40 idbloader.img
@@ -234,21 +234,20 @@ Booting from an SD card
 =======================
 
 To write an image that boots from an SD card (assumed to be /dev/sdc):
-
+要写入从SD卡引导的映像（假定为/ dev / sdc），请执行以下操作：
    ./firefly-rk3288/tools/mkimage -n rk3288 -T rksd -d \
 	firefly-rk3288/spl/u-boot-spl-dtb.bin out && \
    sudo dd if=out of=/dev/sdc seek=64 && \
    sudo dd if=firefly-rk3288/u-boot-dtb.img of=/dev/sdc seek=16384
 
-This puts the Rockchip header and SPL image first and then places the U-Boot
-image at block 16384 (i.e. 8MB from the start of the SD card). This
-corresponds with this setting in U-Boot:
-
+This puts the Rockchip header and SPL image first and then places the U-Boot image at block 16384 (i.e. 8MB from the start of the SD card). 
+这将首先放置Rockchip头和SPL映像，然后将U-Boot映像放置在块16384（即，从SD卡开始起8MB）。
+This corresponds with this setting in U-Boot:
+这与U-Boot中的此设置相对应：
    #define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR	0x4000
 
-Put this SD (or micro-SD) card into your board and reset it. You should see
-something like:
-
+Put this SD (or micro-SD) card into your board and reset it. You should see something like:
+将此SD（或micro-SD）卡放入您的电路板中，然后将其重置。您应该看到类似以下内容：
    U-Boot 2016.01-rc2-00309-ge5bad3b-dirty (Jan 02 2016 - 23:41:59 -0700)
 
    Model: Radxa Rock 2 Square
@@ -264,15 +263,14 @@ something like:
    Hit any key to stop autoboot:  0
    =>
 
-The rockchip bootrom can load and boot an initial spl, then continue to
-load a second-stage bootloader (ie. U-Boot) as soon as the control is returned
-to the bootrom. Both the RK3288 and the RK3036 use this special boot sequence.
-The configuration option enabling this is:
-
+The rockchip bootrom can load and boot an initial spl, then continue to load a second-stage bootloader (ie. U-Boot) as soon as the control is returned to the bootrom. 
+Rockchip Bootrom可以加载并引导初始spl，然后在控件返回到Bootrom后立即继续加载第二阶段的引导程序（即U-Boot）。
+Both the RK3288 and the RK3036 use this special boot sequence.The configuration option enabling this is:
+RK3288和RK3036均使用此特殊的引导顺序。启用此功能的配置选项为：
 	CONFIG_SPL_ROCKCHIP_BACK_TO_BROM=y
 
 You can create the image via the following operations:
-
+您可以通过以下操作创建图像：
    ./firefly-rk3288/tools/mkimage -n rk3288 -T rksd -d \
 	firefly-rk3288/spl/u-boot-spl-dtb.bin out && \
    cat firefly-rk3288/u-boot-dtb.bin >> out && \
@@ -285,7 +283,7 @@ Or:
    sudo dd if=out of=/dev/sdc seek=64
 
 If you have an HDMI cable attached you should see a video console.
-
+如果连接了HDMI电缆，则应该看到视频控制台。
 For evb_rk3036 board:
 	./evb-rk3036/tools/mkimage -n rk3036 -T rksd  -d evb-rk3036/spl/u-boot-spl.bin out && \
 	cat evb-rk3036/u-boot-dtb.bin >> out && \
@@ -604,16 +602,18 @@ When booting you should see something like:
    =>
 
 Future work
+未来的工作
 ===========
 
 Immediate priorities are:
-
+当务之急是：
 - USB host
 - USB device
 - Run CPU at full speed (code exists but we only see ~60 DMIPS maximum)
+全速运行CPU（代码存在，但我们最多只能看到~60 DMIPS）
 - NAND flash
 - Boot U-Boot proper over USB OTG (at present only SPL works)
-
+通过USB OTG正确引导U-Boot（目前仅SPL有效）
 
 Development Notes
 =================
@@ -628,72 +628,62 @@ There are plenty of patches in the links below to help with this work.
 rkimage
 -------
 
-rkimage.c produces an SPL image suitable for sending directly to the boot ROM
-over USB OTG. This is a very simple format - just the string RK32 (as 4 bytes)
-followed by u-boot-spl-dtb.bin.
-
-The boot ROM loads image to 0xff704000 which is in the internal SRAM. The SRAM
-starts at 0xff700000 and extends to 0xff718000 where we put the stack.
-
+rkimage.c produces an SPL image suitable for sending directly to the boot ROM over USB OTG. This is a very simple format - just the string RK32 (as 4 bytes) followed by u-boot-spl-dtb.bin.
+rkimage.c生成一个SPL映像，适合通过USB OTG直接发送到引导ROM。这是一种非常简单的格式-仅字符串RK32（为4个字节），后跟u-boot-spl-dtb.bin。
+The boot ROM loads image to 0xff704000 which is in the internal SRAM. The SRAM starts at 0xff700000 and extends to 0xff718000 where we put the stack.
+引导ROM将映像加载到内部SRAM中的0xff704000。 SRAM的起始地址为0xff700000，延伸至0xff718000，我们将其放入堆栈中。
 rksd
 ----
 
-rksd.c produces an image consisting of 32KB of empty space, a header and
-u-boot-spl-dtb.bin. The header is defined by 'struct header0_info' although
-most of the fields are unused by U-Boot. We just need to specify the
-signature, a flag and the block offset and size of the SPL image.
-
-The header occupies a single block but we pad it out to 4 blocks. The header
-is encoding using RC4 with the key 7c4e0304550509072d2c7b38170d1711. The SPL
-image can be encoded too but we don't do that.
-
-The maximum size of u-boot-spl-dtb.bin which the boot ROM will read is 32KB,
-or 0x40 blocks. This is a severe and annoying limitation. There may be a way
-around this limitation, since there is plenty of SRAM, but at present the
-board refuses to boot if this limit is exceeded.
-
-The image produced is padded up to a block boundary (512 bytes). It should be
-written to the start of an SD card using dd.
-
-Since this image is set to load U-Boot from the SD card at block offset,
-CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR, dd should be used to write
-u-boot-dtb.img to the SD card at that offset. See above for instructions.
-
+rksd.c produces an image consisting of 32KB of empty space, a header and u-boot-spl-dtb.bin. The header is defined by 'struct header0_info' although most of the fields are unused by U-Boot. 
+rksddc生成一个包含32KB空空间、头部和u-boot- splt -dtb.bin的映像。头文件由` struct header0_info `定义，尽管U-Boot没有使用大部分字段。
+We just need to specify the signature, a flag and the block offset and size of the SPL image.
+我们只需要指定签名，标志以及SPL图像的块偏移量和大小即可。
+The header occupies a single block but we pad it out to 4 blocks. The header is encoding using RC4 with the key 7c4e0304550509072d2c7b38170d1711. 
+标头占用一个块，但我们将其填充为4个块。标头是使用RC4和密钥7c4e0304550509072d2c7b38170d1711进行编码的。
+The SPL image can be encoded too but we don't do that.
+SPL图像也可以编码，但我们不这样做。
+The maximum size of u-boot-spl-dtb.bin which the boot ROM will read is 32KB,or 0x40 blocks. This is a severe and annoying limitation. 
+引导ROM读取的u-boot-spl-dtb.bin的最大大小为32KB，或0x40块。这是一个严重而烦人的限制。
+There may be a way around this limitation, since there is plenty of SRAM, but at present the board refuses to boot if this limit is exceeded.
+由于存在大量SRAM，因此可能有解决此限制的方法，但目前，如果超过此限制，板将拒绝启动。
+The image produced is padded up to a block boundary (512 bytes). It should be written to the start of an SD card using dd.
+生成的图像被填充到块边界（512字节）。应该使用dd将其写入SD卡的开头。
+Since this image is set to load U-Boot from the SD card at block offset,CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR, dd should be used to writeu-boot-dtb.img to the SD card at that offset. See above for instructions.
+由于此映像设置为以块偏移量CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR从SD卡加载U-Boot，因此应使用dd在该偏移量处将u-boot-dtb.img写入SD卡。请参阅上面的说明。
 rkspi
 -----
 
-rkspi.c produces an image consisting of a header and u-boot-spl-dtb.bin. The
-resulting image is then spread out so that only the first 2KB of each 4KB
-sector is used. The header is the same as with rksd and the maximum size is
-also 32KB (before spreading). The image should be written to the start of
-SPI flash.
-
+rkspi.c produces an image consisting of a header and u-boot-spl-dtb.bin. The resulting image is then spread out so that only the first 2KB of each 4KB sector is used. 
+rkspi.c产生一个由头文件和u-boot-spl-dtb.bin组成的映像。然后将生成的图像展开，以便仅使用每个4KB扇区中的前2KB。
+The header is the same as with rksd and the maximum size is also 32KB (before spreading). The image should be written to the start of SPI flash.
+标头与rksd相同，最大大小也为32KB（散布前）。该图像应写入SPI闪存的开始。
 See above for instructions on how to write a SPI image.
-
+有关如何写入SPI映像的说明，请参见上文。
 rkmux.py
 --------
 
-You can use this script to create #defines for SoC register access. See the
-script for usage.
-
+You can use this script to create #defines for SoC register access. See the script for usage.
+您可以使用此脚本为SoC寄存器访问创建#define。有关用法，请参见脚本。
 
 Device tree and driver model
 ----------------------------
 
-Where possible driver model is used to provide a structure to the
-functionality. Device tree is used for configuration. However these have an
-overhead and in SPL with a 32KB size limit some shortcuts have been taken.
-In general all Rockchip drivers should use these features, with SPL-specific
-modifications where required.
-
+Where possible driver model is used to provide a structure to the functionality. 
+在可能的情况下，使用驱动程序模型为功能提供结构。
+Device tree is used for configuration. However these have an overhead and in SPL with a 32KB size limit some shortcuts have been taken.
+设备树用于配置。但是这些都有开销，在SPL的大小限制为32KB中，已经采用了一些快捷方式。
+In general all Rockchip drivers should use these features, with SPL-specific modifications where required.
+通常，所有Rockchip驱动程序都应使用这些功能，并在需要时进行SPL特定的修改。
 GPT partition layout
 ----------------------------
 
 Rockchip use a unified GPT partition layout  in open source support.
-With this GPT partition layout, uboot can be compatilbe with other components,
-like miniloader, trusted-os, arm-trust-firmware.
-
+Rockchip在开源支持中使用统一的GPT分区布局。
+With this GPT partition layout, uboot can be compatilbe with other components,like miniloader, trusted-os, arm-trust-firmware.
+通过这种GPT分区布局，uboot可以与其他组件兼容，例如miniloader，trusted-os，arm-trust-firmware。
 There are some documents about partitions in the links below.
+以下链接中有一些有关分区的文档.
 http://rockchip.wikidot.com/partitions
 
 --
