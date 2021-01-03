@@ -301,49 +301,45 @@ Note: rk3036 SDMMC and debug uart use the same iomux, so if you boot from SD, th
 Booting from an SD card on RK3288 with TPL
 ==========================================
 
-Since the size of SPL can't be exceeded 0x8000 bytes in RK3288, it is not possible add
-new SPL features like Falcon mode or etc.
-
-So introduce TPL so-that adding new features to SPL is possible because now TPL should
-run minimal with code like DDR, clock etc and rest of new features in SPL.
-
+Since the size of SPL can't be exceeded 0x8000 bytes in RK3288, it is not possible add new SPL features like Falcon mode or etc.
+由于RK3288中SPL的大小不能超过0x8000字节，因此无法添加新的SPL功能，例如Falcon模式等。
+So introduce TPL so-that adding new features to SPL is possible because now TPL should run minimal with code like DDR, clock etc and rest of new features in SPL.
+因此，引入TPL，这样就可以向SPL添加新功能，因为现在TPL应该以最少的代码运行，如DDR、时钟等，以及SPL中的其他新功能。
 As of now TPL is added on Vyasa-RK3288 board.
-
+截至目前，TPL已添加到Vyasa-RK3288板上。
 To write an image that boots from an SD card (assumed to be /dev/mmcblk0):
-
+要写入从SD卡引导的映像（假定为/ dev / mmcblk0），请执行以下操作：
     sudo dd if=idbloader.img of=/dev/mmcblk0 seek=64 &&
     sudo dd if=u-boot-dtb.img of=/dev/mmcblk0 seek=16384
 
 Booting from an SD card on RK3188
 =================================
 
-For rk3188 boards the general storage onto the card stays the same as
-described above, but the image creation needs a bit more care.
+For rk3188 boards the general storage onto the card stays the same as described above, but the image creation needs a bit more care.
+对于rk3188主板，卡上的常规存储与上述相同，但是图像创建需要多加注意。
+The bootrom of rk3188 expects to find a small 1kb loader which returns control to the bootrom, after which it will load the real loader, which can then be up to 29kb in size and does the regular ddr init.
+rk3188的bootrom期望找到一个小的1kb加载程序，该加载程序将控制权返回给bootrom，此后它将加载实际的加载程序，该加载程序的大小最大为29kb，并执行常规的ddr init。
+  This is handled by a single image (built as the SPL stage) that tests whether it is handled for the first or second time via code executed from the boot0-hook.
+这由一个映像（作为SPL阶段构建）处理，该映像通过从boot0-hook执行的代码来测试是第一次还是第二次处理该映像。
 
-The bootrom of rk3188 expects to find a small 1kb loader which returns
-control to the bootrom, after which it will load the real loader, which
-can then be up to 29kb in size and does the regular ddr init.  This is
-handled by a single image (built as the SPL stage) that tests whether
-it is handled for the first or second time via code executed from the
-boot0-hook.
-
-Additionally the rk3188 requires everything the bootrom loads to be
-rc4-encrypted. Except for the very first stage the bootrom always reads
-and decodes 2kb pages, so files should be sized accordingly.
-
+Additionally the rk3188 requires everything the bootrom loads to be rc4-encrypted.
+此外，rk3188需要将bootrom加载的所有内容进行rc4加密。
+ Except for the very first stage the bootrom always reads and decodes 2kb pages, so files should be sized accordingly.
+除了第一阶段外，bootrom始终会读取和解码2kb的页面，因此应相应调整文件大小。
 # copy tpl, pad to 1020 bytes and append spl
+复制tpl，填充到1020字节，并添加spl
 tools/mkimage -n rk3188 -T rksd -d spl/u-boot-spl.bin out
 
 # truncate, encode and append u-boot.bin
+截断，编码和附加u-boot.bin
 truncate -s %2048 u-boot.bin
 cat u-boot.bin | split -b 512 --filter='openssl rc4 -K 7C4E0304550509072D2C7B38170D1711' >> out
 
 Booting from an SD card on Pine64 Rock64 (RK3328)
 =================================================
 
-For Rock64 rk3328 board the following three parts are required:
-TPL, SPL, and the u-boot image tree blob.
-
+For Rock64 rk3328 board the following three parts are required:TPL, SPL, and the u-boot image tree blob.
+对于Rock64 rk3328板，需要以下三个部分：TPL，SPL和u-boot映像树blob。
   - Write TPL/SPL image at 64 sector
 
     => sudo dd if=idbloader.img of=/dev/mmcblk0 seek=64
@@ -356,9 +352,9 @@ Booting from an SD card on RK3399
 =================================
 
 To write an image that boots from an SD card (assumed to be /dev/sdc):
-
+要写入从SD卡引导的映像（假定为/ dev / sdc），请执行以下操作：
 Option 1: Package the image with Rockchip miniloader:
-
+选项1：使用Rockchip miniloader打包映像：
   - Create idbloader.img
 
     => cd /path/to/u-boot
@@ -378,9 +374,8 @@ Option 1: Package the image with Rockchip miniloader:
     => sudo dd if=uboot.img of=/dev/sdc seek=16384
     => sync
 
-Put this SD (or micro-SD) card into your board and reset it. You should see
-something like:
-
+Put this SD (or micro-SD) card into your board and reset it. You should see something like:
+将此SD（或micro-SD）卡放入您的电路板中，然后将其重置。您应该看到类似以下内容：
 DDR Version 1.20 20190314
 In
 Channel 0: DDR3, 933MHz
@@ -471,7 +466,7 @@ Option 2: Package the image with SPL:
     => ./tools/mkimage -n rk3399 -T rksd -d spl/u-boot-spl-dtb.bin out
 
   - Write prefixed SPL at 64th sector
-
+在第64个扇区写入带前缀的SPL
     => sudo dd if=out of=/dev/sdc seek=64
 
   - Write U-Boot proper at 16384 sector
@@ -538,13 +533,12 @@ Hit any key to stop autoboot:  0
 
 Using fastboot on rk3288
 ========================
-- Write GPT partition layout to mmc device which fastboot want to use it to
-store the image
-
+- Write GPT partition layout to mmc device which fastboot want to use it to store the image
+将GPT分区布局写入到fastboot要使用它来存储映像的mmc设备
         => gpt write mmc 1 $partitions
 
 - Invoke fastboot command to prepare
-
+调用fastboot命令进行准备
         => fastboot 1
 
 - Start fastboot request on PC
@@ -564,24 +558,24 @@ You should see something like:
 Booting from SPI
 ================
 
-To write an image that boots from SPI flash (e.g. for the Haier Chromebook or
-Bob):
-
+To write an image that boots from SPI flash (e.g. for the Haier Chromebook or Bob):
+要编写从SPI闪存引导的图像（例如Haier Chromebook或Bob的图像），请执行以下操作：
    ./chromebook_jerry/tools/mkimage -n rk3288 -T rkspi \
 	-d chromebook_jerry/spl/u-boot-spl-dtb.bin spl.bin && \
    dd if=spl.bin of=spl-out.bin bs=128K conv=sync && \
    cat spl-out.bin chromebook_jerry/u-boot-dtb.img >out.bin && \
    dd if=out.bin of=out.bin.pad bs=4M conv=sync
 
-This converts the SPL image to the required SPI format by adding the Rockchip
-header and skipping every second 2KB block. Then the U-Boot image is written at
-offset 128KB and the whole image is padded to 4MB which is the SPI flash size.
+This converts the SPL image to the required SPI format by adding the Rockchip header and skipping every second 2KB block. 
+通过添加Rockchip头并跳过每隔2KB的块，这会将SPL图像转换为所需的SPI格式。
+Then the U-Boot image is written at offset 128KB and the whole image is padded to 4MB which is the SPI flash size.
+然后，以偏移量128KB写入U-Boot映像，并将整个映像填充到SPI闪存大小4MB。
 The position of U-Boot is controlled with this setting in U-Boot:
-
+U-Boot的位置由U-Boot中的以下设置控制：
    #define CONFIG_SYS_SPI_U_BOOT_OFFS	0x20000
 
 If you have a Dediprog em100pro connected then you can write the image with:
-
+如果连接了Dediprog em100pro，则可以使用以下命令写入映像：
       sudo em100 -s -c GD25LQ32 -d out.bin.pad -r
 
 When booting you should see something like:
