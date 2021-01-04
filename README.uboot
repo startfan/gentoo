@@ -4151,120 +4151,100 @@ configuration to your "File transfer protocols" section:
 NetBSD Notes:
 =============
 
-Starting at version 0.9.2, U-Boot supports NetBSD both as host
-(build U-Boot) and target system (boots NetBSD/mpc8xx).
-
-Building requires a cross environment; it is known to work on
-NetBSD/i386 with the cross-powerpc-netbsd-1.3 package (you will also
-need gmake since the Makefiles are not compatible with BSD make).
+Starting at version 0.9.2, U-Boot supports NetBSD both as host (build U-Boot) and target system (boots NetBSD/mpc8xx).
+从版本0.9.2开始，U-Boot作为主机（构建U-Boot）和目标系统（引导NetBSD / mpc8xx）都支持NetBSD。
+Building requires a cross environment; it is known to work on NetBSD/i386 with the cross-powerpc-netbsd-1.3 package (you will also need gmake since the Makefiles are not compatible with BSD make).
+构建需要一个交叉的环境；已知它可以与交叉powerpc-netbsd-1.3软件包一起在NetBSD / i386上工作（由于Makefile与BSD make不兼容，因此您还需要gmake）。
 Note that the cross-powerpc package does not install include files;
-attempting to build U-Boot will fail because <machine/ansi.h> is
-missing.  This file has to be installed and patched manually:
-
+请注意，cross-powerpc软件包不安装包含文件。
+attempting to build U-Boot will fail because <machine/ansi.h> is missing.  This file has to be installed and patched manually:
+由于缺少<machine / ansi.h>，尝试构建U-Boot将会失败。此文件必须手动安装和修补：
 	# cd /usr/pkg/cross/powerpc-netbsd/include
 	# mkdir powerpc
 	# ln -s powerpc machine
 	# cp /usr/src/sys/arch/powerpc/include/ansi.h powerpc/ansi.h
 	# ${EDIT} powerpc/ansi.h	## must remove __va_list, _BSD_VA_LIST
 
-Native builds *don't* work due to incompatibilities between native
-and U-Boot include files.
-
-Booting assumes that (the first part of) the image booted is a
-stage-2 loader which in turn loads and then invokes the kernel
-proper. Loader sources will eventually appear in the NetBSD source
-tree (probably in sys/arc/mpc8xx/stand/u-boot_stage2/); in the
-meantime, see ftp://ftp.denx.de/pub/u-boot/ppcboot_stage2.tar.gz
+Native builds *don't* work due to incompatibilities between native and U-Boot include files.
+由于本机和U-Boot包含文件之间的不兼容性，本机版本“不起作用”。
+Booting assumes that (the first part of) the image booted is a stage-2 loader which in turn loads and then invokes the kernel proper.
+ 引导假定引导的映像（的第一部分）是第二阶段加载程序，该加载程序依次加载然后调用内核。
+ Loader sources will eventually appear in the NetBSD source tree (probably in sys/arc/mpc8xx/stand/u-boot_stage2/); 
+加载程序源将最终出现在NetBSD源树中（可能在sys / arc / mpc8xx / stand / u-boot_stage2 /中）；
+ in the meantime, see ftp://ftp.denx.de/pub/u-boot/ppcboot_stage2.tar.gz
 
 
 Implementation Internals:
 =========================
 
-The following is not intended to be a complete description of every
-implementation detail. However, it should help to understand the
-inner workings of U-Boot and make it easier to port it to custom
-hardware.
-
+The following is not intended to be a complete description of every implementation detail. 
+以下内容并非旨在完整描述每个实施细节。
+However, it should help to understand the inner workings of U-Boot and make it easier to port it to custom hardware.
+但是，它应该有助于了解U-Boot的内部工作原理，并使其更容易移植到自定义硬件上。
 
 Initial Stack, Global Data:
 ---------------------------
 
-The implementation of U-Boot is complicated by the fact that U-Boot
-starts running out of ROM (flash memory), usually without access to
-system RAM (because the memory controller is not initialized yet).
-This means that we don't have writable Data or BSS segments, and BSS
-is not initialized as zero. To be able to get a C environment working
-at all, we have to allocate at least a minimal stack. Implementation
-options for this are defined and restricted by the CPU used: Some CPU
-models provide on-chip memory (like the IMMR area on MPC8xx and
-MPC826x processors), on others (parts of) the data cache can be
-locked as (mis-) used as memory, etc.
-
-	Chris Hallinan posted a good summary of these issues to the
-	U-Boot mailing list:
-
+The implementation of U-Boot is complicated by the fact that U-Boot starts running out of ROM (flash memory), usually without access to system RAM (because the memory controller is not initialized yet).
+由于U-Boot开始用完ROM（闪存），通常无法访问系统RAM（因为尚未初始化存储控制器），因此U-Boot的实现变得很复杂。
+This means that we don't have writable Data or BSS segments, and BSS is not initialized as zero.
+这意味着我们没有可写的Data或BSS段，并且BSS没有初始化为零。
+ To be able to get a C environment working at all, we have to allocate at least a minimal stack. 
+ 为了使C环境完全正常运行，我们必须至少分配一个最小的堆栈。
+ Implementation options for this are defined and restricted by the CPU used: 
+ 为此的实现选项由所使用的CPU定义和限制：
+ Some CPU models provide on-chip memory (like the IMMR area on MPC8xx and MPC826x processors), on others (parts of) the data cache can be locked as (mis-) used as memory, etc.
+某些CPU型号提供片上存储器（例如MPC8xx和MPC826x处理器上的IMMR区域），在其他（部分）数据缓存中，它们可以被锁定为（误用）存储器，等等。
+	Chris Hallinan posted a good summary of these issues to the U-Boot mailing list:
+克里斯·哈里南（Chris Hallinan）在U-Boot邮件列表中很好地总结了这些问题：
 	Subject: RE: [U-Boot-Users] RE: More On Memory Bank x (nothingness)?
 	From: "Chris Hallinan" <clh@net1plus.com>
 	Date: Mon, 10 Feb 2003 16:43:46 -0500 (22:43 MET)
 	...
 
-	Correct me if I'm wrong, folks, but the way I understand it
-	is this: Using DCACHE as initial RAM for Stack, etc, does not
-	require any physical RAM backing up the cache. The cleverness
-	is that the cache is being used as a temporary supply of
-	necessary storage before the SDRAM controller is setup. It's
-	beyond the scope of this list to explain the details, but you
-	can see how this works by studying the cache architecture and
-	operation in the architecture and processor-specific manuals.
-
-	OCM is On Chip Memory, which I believe the 405GP has 4K. It
-	is another option for the system designer to use as an
-	initial stack/RAM area prior to SDRAM being available. Either
-	option should work for you. Using CS 4 should be fine if your
-	board designers haven't used it for something that would
-	cause you grief during the initial boot! It is frequently not
-	used.
-
-	CONFIG_SYS_INIT_RAM_ADDR should be somewhere that won't interfere
-	with your processor/board/system design. The default value
-	you will find in any recent u-boot distribution in
-	walnut.h should work for you. I'd set it to a value larger
-	than your SDRAM module. If you have a 64MB SDRAM module, set
-	it above 400_0000. Just make sure your board has no resources
-	that are supposed to respond to that address! That code in
-	start.S has been around a while and should work as is when
-	you get the config right.
-
+	Correct me if I'm wrong, folks, but the way I understand it is this: Using DCACHE as initial RAM for Stack, etc, does not require any physical RAM backing up the cache. 
+    伙计们，如果我错了，请纠正我，但是我的理解是这样的：将DCACHE用作Stack等的初始RAM，不需要任何物理RAM来备份缓存。
+    The cleverness is that the cache is being used as a temporary supply of necessary storage before the SDRAM controller is setup.
+    聪明之处在于，在设置SDRAM控制器之前，将缓存用作必需存储的临时供应。
+     It's beyond the scope of this list to explain the details, but you can see how this works by studying the cache architecture and operation in the architecture and processor-specific manuals.
+详细说明不在此列表的范围内，但是您可以通过研究缓存体系结构和体系结构以及特定于处理器的手册中的操作来了解其工作原理。
+	OCM is On Chip Memory, which I believe the 405GP has 4K. It is another option for the system designer to use as an initial stack/RAM area prior to SDRAM being available. 
+   OCM是片上存储器，我相信405GP具有4K。在SDRAM可用之前，系统设计师还可以将其用作初始堆栈/ RAM区域。
+    Either option should work for you. Using CS 4 should be fine if your board designers haven't used it for something that would cause you grief during the initial boot! It is frequently not used.
+两种选择都适合您。如果您的电路板设计人员没有将CS 4用于某些会在初次启动时让您感到悲伤的事情，那么使用CS 4应该会很好！经常不使用它。
+	CONFIG_SYS_INIT_RAM_ADDR should be somewhere that won't interfere with your processor/board/system design. 
+  CONFIG_SYS_INIT_RAM_ADDR应该位于不会干扰处理器/主板/系统设计的地方。
+    The default value you will find in any recent u-boot distribution in walnut.h should work for you. 
+   您可以在walnut.h的任何最新u-boot发行版中找到的默认值适用。 
+    I'd set it to a value larger than your SDRAM module. If you have a 64MB SDRAM module, set it above 400_0000. 
+  我将其设置为大于您的SDRAM模块的值。如果您有64MB SDRAM模块，请将其设置为400_0000以上。
+    Just make sure your board has no resources	that are supposed to respond to that address!
+    只要确保您的板没有任何资源可以响应该地址！
+     That code in start.S has been around a while and should work as is when you get the config right.
+start.S中的代码已经存在了一段时间，当您正确配置后，它应该可以正常工作。
 	-Chris Hallinan
 	DS4.COM, Inc.
 
-It is essential to remember this, since it has some impact on the C
-code for the initialization procedures:
-
-* Initialized global data (data segment) is read-only. Do not attempt
-  to write it.
-
-* Do not use any uninitialized global data (or implicitly initialized
-  as zero data - BSS segment) at all - this is undefined, initiali-
-  zation is performed later (when relocating to RAM).
-
-* Stack space is very limited. Avoid big data buffers or things like
-  that.
-
-Having only the stack as writable memory limits means we cannot use
-normal global data to share information between the code. But it
-turned out that the implementation of U-Boot can be greatly
-simplified by making a global data structure (gd_t) available to all
-functions. We could pass a pointer to this data as argument to _all_
-functions, but this would bloat the code. Instead we use a feature of
-the GCC compiler (Global Register Variables) to share the data: we
-place a pointer (gd) to the global data into a register which we
-reserve for this purpose.
-
-When choosing a register for such a purpose we are restricted by the
-relevant  (E)ABI  specifications for the current architecture, and by
-GCC's implementation.
-
+It is essential to remember this, since it has some impact on the C code for the initialization procedures:
+必须记住这一点，因为它会对初始化过程的C代码产生一些影响：
+* Initialized global data (data segment) is read-only. Do not attempt to write it.
+*初始化的全局数据（数据段）是只读的。不要尝试写它。
+* Do not use any uninitialized global data (or implicitly initialized as zero data - BSS segment) at all - this is undefined, initialization is performed later (when relocating to RAM).
+*完全不要使用任何未初始化的全局数据（或隐式初始化为零数据-BSS段）-这是未定义的，初始化将在以后执行（当重定位到RAM时）。
+* Stack space is very limited. Avoid big data buffers or things like  that.
+*堆栈空间非常有限。避免大数据缓冲区或类似的事情。
+Having only the stack as writable memory limits means we cannot use normal global data to share information between the code.
+仅将堆栈作为可写内存限制意味着我们无法使用普通的全局数据在代码之间共享信息。
+ But it turned out that the implementation of U-Boot can be greatly simplified by making a global data structure (gd_t) available to all functions.
+但是事实证明，通过使所有功能都可以使用全局数据结构（gd_t），可以大大简化U-Boot的实现。
+ We could pass a pointer to this data as argument to _all_ functions, but this would bloat the code.
+ 我们可以将指向该数据的指针作为_all_函数的参数传递，但这会使代码膨胀。 
+ Instead we use a feature of the GCC compiler (Global Register Variables) to share the data: 
+ 相反，我们使用GCC编译器的一个功能（全局寄存器变量）来共享数据：
+ we place a pointer (gd) to the global data into a register which we reserve for this purpose.
+我们将指向全局数据的指针（gd）放入我们为此保留的寄存器中。
+When choosing a register for such a purpose we are restricted by the relevant  (E)ABI  specifications for the current architecture, and by GCC's implementation.
+为此目的选择寄存器时，我们会受到当前架构的相关（E）ABI规范以及GCC实施的限制。
 For PowerPC, the following registers have specific use:
 	R1:	stack pointer
 	R2:	reserved for system use
@@ -4324,10 +4304,10 @@ On NDS32, the following registers are used:
 	PC:	program counter (PC)
 
     ==> U-Boot will use R10 to hold a pointer to the global data
+==> U-Boot将使用R10保留指向全局数据的指针
 
-NOTE: DECLARE_GLOBAL_DATA_PTR must be used with file-global scope,
-or current versions of GCC may "optimize" the code too much.
-
+NOTE: DECLARE_GLOBAL_DATA_PTR must be used with file-global scope,or current versions of GCC may "optimize" the code too much.
+注意：DECLARE_GLOBAL_DATA_PTR必须与文件全局作用域一起使用，否则当前版本的GCC可能会“过度”优化代码。
 On RISC-V, the following registers are used:
 
 	x0: hard-wired zero (zero)
@@ -4343,32 +4323,28 @@ On RISC-V, the following registers are used:
 	pc:	program counter (pc)
 
     ==> U-Boot will use gp to hold a pointer to the global data
-
+U-Boot将使用gp持有指向全局数据的指针
 Memory Management:
 ------------------
 
-U-Boot runs in system state and uses physical addresses, i.e. the
-MMU is not used either for address mapping nor for memory protection.
-
-The available memory is mapped to fixed addresses using the memory
-controller. In this process, a contiguous block is formed for each
-memory type (Flash, SDRAM, SRAM), even when it consists of several
-physical memory banks.
-
-U-Boot is installed in the first 128 kB of the first Flash bank (on
-TQM8xxL modules this is the range 0x40000000 ... 0x4001FFFF). After
-booting and sizing and initializing DRAM, the code relocates itself
-to the upper end of DRAM. Immediately below the U-Boot code some
-memory is reserved for use by malloc() [see CONFIG_SYS_MALLOC_LEN
-configuration setting]. Below that, a structure with global Board
-Info data is placed, followed by the stack (growing downward).
-
-Additionally, some exception handler code is copied to the low 8 kB
-of DRAM (0x00000000 ... 0x00001FFF).
-
-So a typical memory configuration with 16 MB of DRAM could look like
-this:
-
+U-Boot runs in system state and uses physical addresses, i.e. the MMU is not used either for address mapping nor for memory protection.
+U-Boot在系统状态下运行并使用物理地址，即MMU既不用于地址映射也不用于内存保护。
+The available memory is mapped to fixed addresses using the memory controller.
+使用内存控制器将可用内存映射到固定地址。
+ In this process, a contiguous block is formed for each memory type (Flash, SDRAM, SRAM), even when it consists of several physical memory banks.
+在此过程中，即使每种存储类型都由几个物理存储体组成，也会为每种存储类型（闪存，SDRAM，SRAM）形成一个连续的块。
+U-Boot is installed in the first 128 kB of the first Flash bank (on TQM8xxL modules this is the range 0x40000000 ... 0x4001FFFF). 
+U-Boot安装在第一个Flash bank的前128 kB中（在TQM8xxL模块上，这是范围0x40000000 ... 0x4001FFFF）。
+After booting and sizing and initializing DRAM, the code relocates itself to the upper end of DRAM. 
+在启动并调整DRAM的大小并对其进行初始化之后，代码会将其自身重新定位到DRAM的高端。
+Immediately below the U-Boot code some memory is reserved for use by malloc() [see CONFIG_SYS_MALLOC_LEN configuration setting].
+ 在U-Boot代码的正下方，保留了一些内存供malloc（）使用[请参见CONFIG_SYS_MALLOC_LEN配置设置]。
+ Below that, a structure with global Board Info data is placed, followed by the stack (growing downward).
+在它下面，一个具有全局板信息数据的结构被放置，然后是堆栈(向下增长)。
+Additionally, some exception handler code is copied to the low 8 kB of DRAM (0x00000000 ... 0x00001FFF).
+此外，某些异常处理程序代码被复制到DRAM的低8 kB（0x00000000 ... 0x00001FFF）。
+So a typical memory configuration with 16 MB of DRAM could look like this:
+因此，具有16 MB DRAM的典型内存配置如下所示：
 	0x0000 0000	Exception Vector code
 	      :
 	0x0000 1FFF
@@ -4392,40 +4368,38 @@ this:
 System Initialization:
 ----------------------
 
-In the reset configuration, U-Boot starts at the reset entry point
-(on most PowerPC systems at address 0x00000100). Because of the reset
-configuration for CS0# this is a mirror of the on board Flash memory.
+In the reset configuration, U-Boot starts at the reset entry point (on most PowerPC systems at address 0x00000100). 
+在重置配置中，U-Boot从重置入口点开始（在大多数PowerPC系统上，地址为0x00000100）。
+Because of the reset configuration for CS0# this is a mirror of the on board Flash memory.
+由于CS0＃的重置配置，因此它是板载Flash存储器的镜像。
 To be able to re-map memory U-Boot then jumps to its link address.
+为了能够重新映射内存，U-Boot随后跳至其链接地址。
 To be able to implement the initialization code in C, a (small!)
-initial stack is set up in the internal Dual Ported RAM (in case CPUs
-which provide such a feature like), or in a locked part of the data
-cache. After that, U-Boot initializes the CPU core, the caches and
-the SIU.
-
-Next, all (potentially) available memory banks are mapped using a
-preliminary mapping. For example, we put them on 512 MB boundaries
-(multiples of 0x20000000: SDRAM on 0x00000000 and 0x20000000, Flash
-on 0x40000000 and 0x60000000, SRAM on 0x80000000). Then UPM A is
-programmed for SDRAM access. Using the temporary configuration, a
-simple memory test is run that determines the size of the SDRAM
-banks.
-
-When there is more than one SDRAM bank, and the banks are of
-different size, the largest is mapped first. For equal size, the first
-bank (CS2#) is mapped first. The first mapping is always for address
-0x00000000, with any additional banks following immediately to create
-contiguous memory starting from 0.
-
-Then, the monitor installs itself at the upper end of the SDRAM area
-and allocates memory for use by malloc() and for the global Board
-Info data; also, the exception vector code is copied to the low RAM
-pages, and the final stack is set up.
-
+为了能够在C中实现初始化代码，一个（小！）
+initial stack is set up in the internal Dual Ported RAM (in case CPUs which provide such a feature like), or in a locked part of the data cache. 
+初始堆栈设置在内部双端口RAM（如果提供类似功能的CPU）或数据高速缓存的锁定部分中。
+After that, U-Boot initializes the CPU core, the caches and the SIU.
+之后，U-Boot初始化CPU内核，缓存和SIU。
+Next, all (potentially) available memory banks are mapped using a preliminary mapping. 
+接下来，使用初步映射来映射所有（潜在）可用的存储体。
+For example, we put them on 512 MB boundaries(multiples of 0x20000000: SDRAM on 0x00000000 and 0x20000000, Flash on 0x40000000 and 0x60000000, SRAM on 0x80000000). 
+例如，我们将它们放在512 MB边界上（0x20000000的倍数：0x00000000和0x20000000上的SDRAM，0x40000000和0x60000000上的Flash，0x80000000上的SRAM）。
+Then UPM A is programmed for SDRAM access. Using the temporary configuration, a simple memory test is run that determines the size of the SDRAM banks.
+然后，将UPM A编程用于SDRAM访问。使用临时配置，将运行简单的内存测试，以确定SDRAM存储区的大小。
+When there is more than one SDRAM bank, and the banks are ofdifferent size, the largest is mapped first. 
+当有多个SDRAM存储区，并且存储区大小不同时，最大的存储区将首先被映射。
+For equal size, the first bank (CS2#) is mapped first.
+对于相等的大小，第一个存储体（CS2＃）首先被映射。
+ The first mapping is always for address 0x00000000, with any additional banks following immediately to create contiguous memory starting from 0.
+第一个映射始终是针对地址0x00000000的，后面紧跟着任何其他存储区以创建从0开始的连续存储器。
+Then, the monitor installs itself at the upper end of the SDRAM area and allocates memory for use by malloc() and for the global Board Info data;
+然后，监视器将自身安装在SDRAM区域的高端，并分配内存供malloc（）和全局Board Info数据使用；
+ also, the exception vector code is copied to the low RAM pages, and the final stack is set up.
+同样，将异常向量代码复制到低RAM页面中，并建立最终堆栈。
 Only after this relocation will you have a "normal" C environment;
-until that you are restricted in several ways, mostly because you are
-running from ROM, and because the code will have to be relocated to a
-new address in RAM.
-
+仅在此重定位之后，您才具有“正常” C环境；
+until that you are restricted in several ways, mostly because you are running from ROM, and because the code will have to be relocated to a new address in RAM.
+直到您受到多种方式的限制，主要是因为您是从ROM运行，并且因为必须将代码重定位到RAM中的新地址。
 
 U-Boot Porting Guide:
 ----------------------
@@ -4595,14 +4569,13 @@ Notes:
   containing several unrelated changes or arbitrary reformats will be
   returned with a request to re-formatting / split it.
 
-* If you modify existing code, make sure that your new code does not
-  add to the memory footprint of the code ;-) Small is beautiful!
-  When adding new features, these should compile conditionally only
-  (using #ifdef), and the resulting code with the new feature
-  disabled must not need more memory than the old code without your
-  modification.
-
-* Remember that there is a size limit of 100 kB per message on the
-  u-boot mailing list. Bigger patches will be moderated. If they are
-  reasonable and not too big, they will be acknowledged. But patches
-  bigger than the size limit should be avoided.
+If you modify existing code, make sure that your new code does not  add to the memory footprint of the code ;-) Small is beautiful!
+*如果您修改现有代码，请确保新代码不会增加代码的内存占用量；-)小巧漂亮！
+  When adding new features, these should compile conditionally only (using #ifdef), and the resulting code with the new feature disabled must not need more memory than the old code without your modification.
+添加新功能时，这些功能应仅按条件进行编译（使用#ifdef），并且在不进行任何修改的情况下，禁用了新功能的结果代码不得比旧代码占用更多的内存。
+* Remember that there is a size limit of 100 kB per message on the u-boot mailing list. 
+*请记住，u-boot邮件列表中每条消息的大小限制为100 kB。
+Bigger patches will be moderated. If they are reasonable and not too big, they will be acknowledged. 
+较大的补丁程序将被审核。如果它们合理且不太大，则会得到认可。
+But patches bigger than the size limit should be avoided.
+但是应避免补丁大于大小限制。
