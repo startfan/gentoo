@@ -6,51 +6,38 @@
 Summary:
 ========
 
-This directory contains the source code for U-Boot, a boot loader for
-Embedded boards based on PowerPC, ARM, MIPS and several other
-processors, which can be installed in a boot ROM and used to
-initialize and test the hardware or to download and run application
-code.
-
-The development of U-Boot is closely related to Linux: some parts of
-the source code originate in the Linux source tree, we have some
-header files in common, and special provision has been made to
-support booting of Linux images.
-
-Some attention has been paid to make this software easily
-configurable and extendable. For instance, all monitor commands are
-implemented with the same call interface, so that it's very easy to
-add new commands. Also, instead of permanently adding rarely used
-code (for instance hardware test utilities) to the monitor, you can
-load and run it dynamically.
-
+This directory contains the source code for U-Boot, a boot loader for Embedded boards based on PowerPC, ARM, MIPS and several other processors, which can be installed in a boot ROM and used to initialize and test the hardware or to download and run application code.
+该目录包含U-Boot的源代码，U-Boot是基于PowerPC，ARM，MIPS和其他几种处理器的嵌入式板的引导加载程序，可以安装在引导ROM中，用于初始化和测试硬件或下载并运行应用程序代码。
+The development of U-Boot is closely related to Linux: some parts of the source code originate in the Linux source tree, we have some header files in common, and special provision has been made to support booting of Linux images.
+U-Boot的开发与Linux密切相关：源代码的某些部分起源于Linux源代码树，我们有一些共同的头文件，并且已做出特殊规定来支持Linux映像的引导。
+Some attention has been paid to make this software easilyconfigurable and extendable.
+为了使此软件易于配置和扩展，已经进行了一些注意。
+ For instance, all monitor commands are implemented with the same call interface, so that it's very easy to add new commands. 
+ 例如，所有监视命令都使用相同的调用接口实现，因此添加新命令非常容易。
+ Also, instead of permanently adding rarely used code (for instance hardware test utilities) to the monitor, you can load and run it dynamically.
+此外，您可以动态地加载和运行它，而不是向监视器永久添加很少使用的代码（例如，硬件测试实用程序）。
 
 Status:
 =======
 
-In general, all boards for which a configuration option exists in the
-Makefile have been tested to some extent and can be considered
-"working". In fact, many of them are used in production systems.
-
-In case of problems see the CHANGELOG file to find out who contributed
-the specific port. In addition, there are various MAINTAINERS files
-scattered throughout the U-Boot source identifying the people or
-companies responsible for various boards and subsystems.
-
-Note: As of August, 2010, there is no longer a CHANGELOG file in the
-actual U-Boot source tree; however, it can be created dynamically
-from the Git log using:
-
+In general, all boards for which a configuration option exists in the Makefile have been tested to some extent and can be considered "working". 
+通常，Makefile中存在配置选项的所有板均已进行了某种程度的测试，可以视为“正常”。
+In fact, many of them are used in production systems.
+实际上，其中许多用于生产系统。
+In case of problems see the CHANGELOG file to find out who contributed the specific port. 
+如有问题，请参阅CHANGELOG文件以查找谁贡献了特定端口。
+In addition, there are various MAINTAINERS files scattered throughout the U-Boot source identifying the people or companies responsible for various boards and subsystems.
+此外，在整个U-Boot源中散布着各种MAINTAINERS文件，用于标识负责各种板和子系统的人员或公司。
+Note: As of August, 2010, there is no longer a CHANGELOG file in the actual U-Boot source tree; however, it can be created dynamically from the Git log using:
+注意：从2010年8月开始，实际的U-Boot源代码树中不再有CHANGELOG文件；请参阅第11页的“更改目录”。但是，可以使用以下命令从Git日志中动态创建它：
 	make CHANGELOG
 
 
 Where to get help:
 ==================
 
-In case you have questions about, problems with or contributions for
-U-Boot, you should send a message to the U-Boot mailing list at
-<u-boot@lists.denx.de>. There is also an archive of previous traffic
-on the mailing list - please search the archive before asking FAQ's.
+In case you have questions about, problems with or contributions for U-Boot, you should send a message to the U-Boot mailing list at <u-boot@lists.denx.de>. 
+There is also an archive of previous traffic on the mailing list - please search the archive before asking FAQ's.
 Please see http://lists.denx.de/pipermail/u-boot and
 http://dir.gmane.org/gmane.comp.boot-loaders.u-boot
 
@@ -58,17 +45,13 @@ http://dir.gmane.org/gmane.comp.boot-loaders.u-boot
 Where to get source code:
 =========================
 
-The U-Boot source code is maintained in the Git repository at
-git://www.denx.de/git/u-boot.git ; you can browse it online at
-http://www.denx.de/cgi-bin/gitweb.cgi?p=u-boot.git;a=summary
+The U-Boot source code is maintained in the Git repository at git://www.denx.de/git/u-boot.git ; 
+you can browse it online at http://www.denx.de/cgi-bin/gitweb.cgi?p=u-boot.git;a=summary
 
-The "snapshot" links on this page allow you to download tarballs of
-any version you might be interested in. Official releases are also
-available for FTP download from the ftp://ftp.denx.de/pub/u-boot/
-directory.
+The "snapshot" links on this page allow you to download tarballs of any version you might be interested in. 
+Official releases are also available for FTP download from the ftp://ftp.denx.de/pub/u-boot/ directory.
 
-Pre-built (and tested) images are available from
-ftp://ftp.denx.de/pub/u-boot/images/
+Pre-built (and tested) images are available from ftp://ftp.denx.de/pub/u-boot/images/
 
 
 Where we come from:
@@ -78,6 +61,7 @@ Where we come from:
 - create PPCBoot project (http://sourceforge.net/projects/ppcboot)
 - clean up code
 - make it easier to add custom boards
+使添加自定义板更加容易
 - make it possible to add other [PowerPC] CPUs
 - extend functions, especially:
   * Provide extended interface to Linux boot loader
@@ -93,21 +77,19 @@ Where we come from:
 Names and Spelling:
 ===================
 
-The "official" name of this project is "Das U-Boot". The spelling
-"U-Boot" shall be used in all written text (documentation, comments
-in source files etc.). Example:
-
+The "official" name of this project is "Das U-Boot".
+ The spelling "U-Boot" shall be used in all written text (documentation, comments in source files etc.). Example:
+所有书面文本（文档，源文件中的注释等）均应使用拼写“ U-Boot”。例：
 	This is the README file for the U-Boot project.
 
 File names etc. shall be based on the string "u-boot". Examples:
-
+文件名等应基于字符串“ u-boot”。例子：
 	include/asm-ppc/u-boot.h
 
 	#include <asm/u-boot.h>
 
-Variable names, preprocessor constants etc. shall be either based on
-the string "u_boot" or on "U_BOOT". Example:
-
+Variable names, preprocessor constants etc. shall be either based on the string "u_boot" or on "U_BOOT". Example:
+变量名称，预处理器常量等应基于字符串“ u_boot”或基于“ U_BOOT”。例：
 	U_BOOT_VERSION		u_boot_logo
 	IH_OS_U_BOOT		u_boot_hush_start
 
@@ -153,7 +135,7 @@ Directory Hierarchy:
 /disk			Code for disk drive partition handling
 /doc			Documentation (don't expect too much)
 /drivers		Commonly used device drivers
-/dts			Contains Makefile for building internal U-Boot fdt.
+/dts			Contains Makefile for building internal U-Boot fdt.包含用于生成内部U-Boot fdt的Makefile。
 /examples		Example code for standalone applications, etc.
 /fs			Filesystem code (cramfs, ext2, jffs2, etc.)
 /include		Header Files
@@ -168,161 +150,143 @@ Directory Hierarchy:
 Software Configuration:
 =======================
 
-Configuration is usually done using C preprocessor defines; the
-rationale behind that is to avoid dead code whenever possible.
-
+Configuration is usually done using C preprocessor defines; the rationale behind that is to avoid dead code whenever possible.
+配置通常使用C预处理程序定义来完成；其基本原理是尽可能避免死代码。
 There are two classes of configuration variables:
-
+有两类配置变量：
 * Configuration _OPTIONS_:
-  These are selectable by the user and have names beginning with
-  "CONFIG_".
-
+  These are selectable by the user and have names beginning with  "CONFIG_".
+这些可由用户选择，并且名称以“ CONFIG_”开头。
 * Configuration _SETTINGS_:
-  These depend on the hardware etc. and should not be meddled with if
-  you don't know what you're doing; they have names beginning with
-  "CONFIG_SYS_".
-
-Previously, all configuration was done by hand, which involved creating
-symbolic links and editing configuration files manually. More recently,
-U-Boot has added the Kbuild infrastructure used by the Linux kernel,
-allowing you to use the "make menuconfig" command to configure your
-build.
-
+  These depend on the hardware etc. and should not be meddled with if  you don't know what you're doing;
+  这些取决于硬件等，如果您不知道自己在做什么，则不应该介入其中。
+   they have names beginning with "CONFIG_SYS_".
+它们的名称以“ CONFIG_SYS_”开头。
+Previously, all configuration was done by hand, which involved creating symbolic links and editing configuration files manually. 
+以前，所有配置都是手动完成的，包括创建符号链接和手动编辑配置文件。
+More recently,U-Boot has added the Kbuild infrastructure used by the Linux kernel,allowing you to use the "make menuconfig" command to configure your build.
+最近，U-Boot添加了Linux内核使用的Kbuild基础结构，使您可以使用“ make menuconfig”命令来配置构建。
 
 Selection of Processor Architecture and Board Type:
 ---------------------------------------------------
 
-For all supported boards there are ready-to-use default
-configurations available; just type "make <board_name>_defconfig".
-
+For all supported boards there are ready-to-use default configurations available; just type "make <board_name>_defconfig".
+对于所有受支持的板，都有可用的默认配置。只需键入“ make <board_name> _defconfig”。
 Example: For a TQM823L module type:
 
 	cd u-boot
 	make TQM823L_defconfig
 
-Note: If you're looking for the default configuration file for a board
-you're sure used to be there but is now missing, check the file
-doc/README.scrapyard for a list of no longer supported boards.
-
+Note: If you're looking for the default configuration file for a board you're sure used to be there but is now missing, check the file doc/README.scrapyard for a list of no longer supported boards.
+注意：如果您正在寻找某个板子的默认配置文件，您肯定曾经在其中，但是现在丢失了，请检查文件doc / README.scrapyard中不再支持的板子的列表。
 Sandbox Environment:
 --------------------
 
-U-Boot can be built natively to run on a Linux host using the 'sandbox'
-board. This allows feature development which is not board- or architecture-
-specific to be undertaken on a native platform. The sandbox is also used to
-run some of U-Boot's tests.
-
+U-Boot can be built natively to run on a Linux host using the 'sandbox' board. 
+可以使用“沙盒”板在本地构建U-Boot以在Linux主机上运行。
+This allows feature development which is not board- or architecture- specific to be undertaken on a native platform. 
+这允许在本机平台上进行不是特定于主板或体系结构的功能开发。
+The sandbox is also used to run some of U-Boot's tests.
+沙箱还用于运行U-Boot的某些测试。
 See doc/arch/index.rst for more details.
 
 
 Board Initialisation Flow:
 --------------------------
 
-This is the intended start-up flow for boards. This should apply for both
-SPL and U-Boot proper (i.e. they both follow the same rules).
-
-Note: "SPL" stands for "Secondary Program Loader," which is explained in
-more detail later in this file.
-
-At present, SPL mostly uses a separate code path, but the function names
-and roles of each function are the same. Some boards or architectures
-may not conform to this.  At least most ARM boards which use
-CONFIG_SPL_FRAMEWORK conform to this.
-
-Execution typically starts with an architecture-specific (and possibly
-CPU-specific) start.S file, such as:
-
+This is the intended start-up flow for boards. This should apply for both SPL and U-Boot proper (i.e. they both follow the same rules).
+这是电路板的预期启动流程。这应该同时适用于SPL和U-Boot本身（即它们都遵循相同的规则）。
+Note: "SPL" stands for "Secondary Program Loader," which is explained in more detail later in this file.
+注意：“ SPL”代表“辅助程序加载程序”，此文件稍后将对此进行详细说明。
+At present, SPL mostly uses a separate code path, but the function names and roles of each function are the same. 
+目前，SPL大多使用单独的代码路径，但每个函数的功能名称和角色相同。
+Some boards or architecturesmay not conform to this.  At least most ARM boards which use CONFIG_SPL_FRAMEWORK conform to this.
+某些主板或架构可能不符合此要求。至少大多数使用CONFIG_SPL_FRAMEWORK的ARM板都符合此要求。
+Execution typically starts with an architecture-specific (and possibly CPU-specific) start.S file, such as:
+执行通常从特定于体系结构（并且可能特定于CPU）的start.S文件开始，例如：
 	- arch/arm/cpu/armv7/start.S
 	- arch/powerpc/cpu/mpc83xx/start.S
 	- arch/mips/cpu/start.S
 
-and so on. From there, three functions are called; the purpose and
-limitations of each of these functions are described below.
-
+and so on. From there, three functions are called; the purpose and limitations of each of these functions are described below.
+等等。从那里开始，调用了三个函数。这些功能的目的和局限性如下所述。
 lowlevel_init():
 	- purpose: essential init to permit execution to reach board_init_f()
+    -目的：允许执行到达board_init_f（）的基本初始化
 	- no global_data or BSS
 	- there is no stack (ARMv7 may have one but it will soon be removed)
-	- must not set up SDRAM or use console
-	- must only do the bare minimum to allow execution to continue to
-		board_init_f()
+    -没有堆栈（ARMv7可能有一个堆栈，但是很快就会被删除）
+	- must not set up SDRAM or use console-不得设置SDRAM或使用控制台
+	- must only do the bare minimum to allow execution to continue to board_init_f()
+    -必须仅做最少的工作，以允许执行继续到board_init_f（）
 	- this is almost never needed
 	- return normally from this function
 
 board_init_f():
-	- purpose: set up the machine ready for running board_init_r():
-		i.e. SDRAM and serial UART
+	- purpose: set up the machine ready for running board_init_r():i.e. SDRAM and serial UART
+    -目的：设置机器以准备运行board_init_r（）：即。 SDRAM和串行UART
 	- global_data is available
 	- stack is in SRAM
-	- BSS is not available, so you cannot use global/static variables,
-		only stack variables and global_data
-
+	- BSS is not available, so you cannot use global/static variables,only stack variables and global_data
+-BSS不可用，因此您不能使用全局/静态变量，只能使用堆栈变量和global_data
 	Non-SPL-specific notes:
-	- dram_init() is called to set up DRAM. If already done in SPL this
-		can do nothing
-
+	- dram_init() is called to set up DRAM. If already done in SPL this can do nothing
+-调用dram_init（）设置DRAM。如果已经在SPL中完成此操作，则无济于事
 	SPL-specific notes:
-	- you can override the entire board_init_f() function with your own
-		version as needed.
+	- you can override the entire board_init_f() function with your own version as needed.
+    -您可以根据需要使用自己的版本覆盖整个board_init_f（）函数。
 	- preloader_console_init() can be called here in extremis
+    -preloader_console_init（）可在此处极端调用
 	- should set up SDRAM, and anything needed to make the UART work
+    -应该设置SDRAM，以及使UART工作所需的任何东西
 	- there is no need to clear BSS, it will be done by crt0.S
-	- for specific scenarios on certain architectures an early BSS *can*
-	  be made available (via CONFIG_SPL_EARLY_BSS by moving the clearing
-	  of BSS prior to entering board_init_f()) but doing so is discouraged.
-	  Instead it is strongly recommended to architect any code changes
-	  or additions such to not depend on the availability of BSS during
-	  board_init_f() as indicated in other sections of this README to
-	  maintain compatibility and consistency across the entire code base.
-	- must return normally from this function (don't call board_init_r()
-		directly)
-
-Here the BSS is cleared. For SPL, if CONFIG_SPL_STACK_R is defined, then at
-this point the stack and global_data are relocated to below
-CONFIG_SPL_STACK_R_ADDR. For non-SPL, U-Boot is relocated to run at the top of
-memory.
-
+    -无需清除BSS，将由crt0.S完成
+	- for specific scenarios on certain architectures an early BSS *can* be made available (via CONFIG_SPL_EARLY_BSS by moving the clearing of BSS prior to entering board_init_f()) but doing so is discouraged.
+-对于某些体系结构上的特定方案，可以*通过提供的早期BSS *（通过在输入board_init_f（）之前移动BSS的清除来通过CONFIG_SPL_EARLY_BSS）来实现，但是不建议这样做。
+	  Instead it is strongly recommended to architect any code changes or additions such to not depend on the availability of BSS during  board_init_f() as indicated in other sections of this README to maintain compatibility and consistency across the entire code base.
+相反，强烈建议设计任何代码更改或添加，使其不依赖于本README其他部分所述的board_init_f（）期间的BSS可用性，以保持整个代码库的兼容性和一致性。
+	- must return normally from this function (don't call board_init_r() directly)
+-必须从此函数正常返回（不要直接调用board_init_r（））
+Here the BSS is cleared. For SPL, if CONFIG_SPL_STACK_R is defined, then at this point the stack and global_data are relocated to below CONFIG_SPL_STACK_R_ADDR. 
+此处清除了BSS。对于SPL，如果定义了CONFIG_SPL_STACK_R，则此时将堆栈和global_data重定位到CONFIG_SPL_STACK_R_ADDR之下。
+For non-SPL, U-Boot is relocated to run at the top of memory.
+对于非SPL，U-Boot被重定位以在内存顶部运行。
 board_init_r():
 	- purpose: main execution, common code
 	- global_data is available
 	- SDRAM is available
 	- BSS is available, all static/global variables can be used
 	- execution eventually continues to main_loop()
-
+-执行最终继续到main_loop（）
 	Non-SPL-specific notes:
-	- U-Boot is relocated to the top of memory and is now running from
-		there.
-
+	- U-Boot is relocated to the top of memory and is now running from there.
+-U-Boot重定位到内存顶部，并且现在从那里开始运行。
 	SPL-specific notes:
-	- stack is optionally in SDRAM, if CONFIG_SPL_STACK_R is defined and
-		CONFIG_SPL_STACK_R_ADDR points into SDRAM
-	- preloader_console_init() can be called here - typically this is
-		done by selecting CONFIG_SPL_BOARD_INIT and then supplying a
-		spl_board_init() function containing this call
+- stack is optionally in SDRAM, if CONFIG_SPL_STACK_R is defined and CONFIG_SPL_STACK_R_ADDR points into SDRAM
+-如果定义了CONFIG_SPL_STACK_R并且CONFIG_SPL_STACK_R_ADDR指向SDRAM，则堆栈可选地位于SDRAM中
+	- preloader_console_init() can be called here - typically this is done by selecting CONFIG_SPL_BOARD_INIT and then supplying a spl_board_init() function containing this call
+-在这里可以调用preloader_console_init（）-通常是通过选择CONFIG_SPL_BOARD_INIT然后提供包含此调用的spl_board_init（）函数来完成的
 	- loads U-Boot or (in falcon mode) Linux
-
+-加载U-Boot或（在falcon模式下）Linux
 
 
 Configuration Options:
 ----------------------
 
-Configuration depends on the combination of board and CPU type; all
-such information is kept in a configuration file
-"include/configs/<board_name>.h".
+Configuration depends on the combination of board and CPU type; 
+配置取决于板卡和CPU类型的组合。
+all such information is kept in a configuration file "include/configs/<board_name>.h".
+所有这些信息都保存在配置文件“ include / configs / <board_name> .h”中。
+Example: For a TQM823L module, all configuration settings are in "include/configs/TQM823L.h".
 
-Example: For a TQM823L module, all configuration settings are in
-"include/configs/TQM823L.h".
 
-
-Many of the options are named exactly as the corresponding Linux
-kernel configuration options. The intention is to make it easier to
-build a config tool - later.
-
+Many of the options are named exactly as the corresponding Linux kernel configuration options. 
+许多选项的名称与相应的Linux内核配置选项完全相同。
+The intention is to make it easier to build a config tool - later.
+其目的是让稍后构建配置工具变得更容易。
 - ARM Platform Bus Type(CCI):
-		CoreLink Cache Coherent Interconnect (CCI) is ARM BUS which
-		provides full cache coherency between two clusters of multi-core
-		CPUs and I/O coherency for devices and I/O masters
-
+		CoreLink Cache Coherent Interconnect (CCI) is ARM BUS which provides full cache coherency between two clusters of multi-core CPUs and I/O coherency for devices and I/O masters
+CoreLink高速缓存一致性互连（CCI）是ARM BUS，可在两个多核CPU群集之间提供完全的高速缓存一致性，并为设备和I / O主设备提供I / O一致性
 		CONFIG_SYS_FSL_HAS_CCI400
 
 		Defined For SoC that has cache coherent interconnect
@@ -2316,12 +2280,12 @@ The following options need to be configured:
 Board initialization settings:
 ------------------------------
 
-During Initialization u-boot calls a number of board specific functions
-to allow the preparation of board specific prerequisites, e.g. pin setup
-before drivers are initialized. To enable these callbacks the
-following configuration macros have to be defined. Currently this is
-architecture specific, so please check arch/your_architecture/lib/board.c
-typically in board_init_f() and board_init_r().
+During Initialization u-boot calls a number of board specific functions to allow the preparation of board specific prerequisites, e.g. pin setup before drivers are initialized.
+在初始化期间，u-boot调用了许多特定于板的功能，以允许准备特定于板的先决条件，例如在初始化驱动程序之前进行引脚设置。
+ To enable these callbacks the following configuration macros have to be defined.
+要启用这些回调，必须定义以下配置宏。
+  Currently this is architecture specific, so please check arch/your_architecture/lib/board.c typically in board_init_f() and board_init_r().
+ 当前这是特定于体系结构的，因此请通常在board_init_f（）和board_init_r（）中检查arch / your_architecture / lib / board.c。
 
 - CONFIG_BOARD_EARLY_INIT_F: Call board_early_init_f()
 - CONFIG_BOARD_EARLY_INIT_R: Call board_early_init_r()
@@ -2348,34 +2312,29 @@ Configuration Settings:
 - CONFIG_SYS_PBSIZE:	Buffer size for Console output
 
 - CONFIG_SYS_MAXARGS:	max. Number of arguments accepted for monitor commands
-
-- CONFIG_SYS_BARGSIZE: Buffer size for Boot Arguments which are passed to
-		the application (usually a Linux kernel) when it is
-		booted
-
+最高监视命令接受的参数数量
+- CONFIG_SYS_BARGSIZE: Buffer size for Boot Arguments which are passed to the application (usually a Linux kernel) when it is booted
+引导参数在启动时传递给应用程序（通常是Linux内核）的缓冲区大小
 - CONFIG_SYS_BAUDRATE_TABLE:
 		List of legal baudrate settings for this board.
-
+此板的合法波特率设置列表。
 - CONFIG_SYS_MEM_RESERVE_SECURE
 		Only implemented for ARMv8 for now.
-		If defined, the size of CONFIG_SYS_MEM_RESERVE_SECURE memory
-		is substracted from total RAM and won't be reported to OS.
-		This memory can be used as secure memory. A variable
-		gd->arch.secure_ram is used to track the location. In systems
-		the RAM base is not zero, or RAM is divided into banks,
-		this variable needs to be recalcuated to get the address.
-
+		If defined, the size of CONFIG_SYS_MEM_RESERVE_SECURE memory is substracted from total RAM and won't be reported to OS.
+如果已定义，则CONFIG_SYS_MEM_RESERVE_SECURE内存的大小将从总RAM中减去，并且不会报告给OS。
+		This memory can be used as secure memory. A variable gd->arch.secure_ram is used to track the location.
+        该内存可以用作安全内存。变量gd-> arch.secure_ram用于跟踪位置。
+         In systems the RAM base is not zero, or RAM is divided into banks,this variable needs to be recalcuated to get the address.
+在系统中，RAM的基数不为零，或者RAM被划分为存储体，需要重新计算此变量以获取地址。
 - CONFIG_SYS_MEM_TOP_HIDE:
-		If CONFIG_SYS_MEM_TOP_HIDE is defined in the board config header,
-		this specified memory area will get subtracted from the top
-		(end) of RAM and won't get "touched" at all by U-Boot. By
-		fixing up gd->ram_size the Linux kernel should gets passed
-		the now "corrected" memory size and won't touch it either.
-		This should work for arch/ppc and arch/powerpc. Only Linux
-		board ports in arch/powerpc with bootwrapper support that
-		recalculate the memory size from the SDRAM controller setup
-		will have to get fixed in Linux additionally.
-
+		If CONFIG_SYS_MEM_TOP_HIDE is defined in the board config header,this specified memory area will get subtracted from the top (end) of RAM and won't get "touched" at all by U-Boot.
+如果在板配置头中定义了CONFIG_SYS_MEM_TOP_HIDE，则该指定的内存区域将从RAM的顶部（末端）减去，并且不会被U-Boot完全“碰到”。
+         By fixing up gd->ram_size the Linux kernel should gets passed the now "corrected" memory size and won't touch it either.
+         通过修复gd-> ram_size，Linux内核应该通过现在已“更正”的内存大小，并且也不会碰它。
+		This should work for arch/ppc and arch/powerpc. 
+        这应该适用于arch / ppc和arch / powerpc。
+        Only Linux board ports in arch/powerpc with bootwrapper support that recalculate the memory size from the SDRAM controller setup will have to get fixed in Linux additionally.
+只有arch / powerpc中具有bootwrapper支持的Linux板端口可以通过SDRAM控制器设置重新计算内存大小，而在Linux中则必须进行修复。
 		This option can be used as a workaround for the 440EPx/GRx
 		CHIP 11 errata where the last 256 bytes in SDRAM shouldn't
 		be touched.
@@ -2409,25 +2368,19 @@ Configuration Settings:
 
 - CONFIG_SYS_MALLOC_LEN:
 		Size of DRAM reserved for malloc() use.
-
+保留给malloc（）使用的DRAM大小。
 - CONFIG_SYS_MALLOC_F_LEN
-		Size of the malloc() pool for use before relocation. If
-		this is defined, then a very simple malloc() implementation
-		will become available before relocation. The address is just
-		below the global data, and the stack is moved down to make
-		space.
-
-		This feature allocates regions with increasing addresses
-		within the region. calloc() is supported, but realloc()
-		is not available. free() is supported but does nothing.
-		The memory will be freed (or in fact just forgotten) when
-		U-Boot relocates itself.
-
+		Size of the malloc() pool for use before relocation. If this is defined, then a very simple malloc() implementation will become available before relocation. 
+  重定位之前使用的malloc（）池的大小。如果已定义，则在重定位之前将有一个非常简单的malloc（）实现。
+        The address is just below the global data, and the stack is moved down to make space.
+该地址位于全局数据的正下方，并且堆栈向下移动以腾出空间。
+		This feature allocates regions with increasing addresses within the region. calloc() is supported, but realloc() is not available. free() is supported but does nothing.
+	此功能为区域分配区域中地址增加的区域。支持calloc（），但realloc（）不可用。支持free（）但不执行任何操作。
+    	The memory will be freed (or in fact just forgotten) when U-Boot relocates itself.
+当U-Boot重新定位自身时，内存将被释放（或实际上只是被忘记了）。
 - CONFIG_SYS_MALLOC_SIMPLE
-		Provides a simple and small malloc() and calloc() for those
-		boards which do not use the full malloc in SPL (which is
-		enabled with CONFIG_SYS_SPL_MALLOC_START).
-
+		Provides a simple and small malloc() and calloc() for those	boards which do not use the full malloc in SPL (which is enabled with CONFIG_SYS_SPL_MALLOC_START).
+为那些未在SPL中使用完整malloc的板提供简单的小型malloc（）和calloc（）（已通过CONFIG_SYS_SPL_MALLOC_START启用）。
 - CONFIG_SYS_NONCACHED_MEMORY:
 		Size of non-cached memory area. This area of memory will be
 		typically located right below the malloc() area and mapped
