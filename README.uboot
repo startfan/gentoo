@@ -2968,6 +2968,7 @@ This firmware often needs to be loaded during U-Boot booting.
 	Define alignment of reserved memory MC requires
 
 Reproducible builds
+可复制的构建
 -------------------
 
 In order to achieve reproducible builds, timestamps used in the U-Boot build
@@ -2982,37 +2983,37 @@ SOURCE_DATE_EPOCH should be set to a number of seconds since the epoch, in UTC.
 Building the Software:
 ======================
 
-Building U-Boot has been tested in several native build environments
-and in many different cross environments. Of course we cannot support
-all possibly existing versions of cross development tools in all
-(potentially obsolete) versions. In case of tool chain problems we
-recommend to use the ELDK (see http://www.denx.de/wiki/DULG/ELDK)
-which is extensively used to build and test U-Boot.
-
-If you are not using a native environment, it is assumed that you
-have GNU cross compiling tools available in your path. In this case,
-you must set the environment variable CROSS_COMPILE in your shell.
-Note that no changes to the Makefile or any other source files are
-necessary. For example using the ELDK on a 4xx CPU, please enter:
-
+Building U-Boot has been tested in several native build environments and in many different cross environments. 
+构建U-Boot已在多个本机构建环境和许多不同的交叉环境中进行了测试。
+Of course we cannot support all possibly existing versions of cross development tools in all (potentially obsolete) versions.
+ 当然，我们不能在所有（可能已过时）的版本中支持交叉开发工具的所有可能的现有版本。
+ In case of tool chain problems we recommend to use the ELDK (see http://www.denx.de/wiki/DULG/ELDK) which is extensively used to build and test U-Boot.
+如果出现工具链问题，我们建议使用ELDK（请参阅http://www.denx.de/wiki/DULG/ELDK），该工具已广泛用于构建和测试U-Boot。
+If you are not using a native environment, it is assumed that you have GNU cross compiling tools available in your path. 
+如果您未使用本机环境，则假定您的路径中具有GNU交叉编译工具。
+In this case,you must set the environment variable CROSS_COMPILE in your shell.
+在这种情况下，必须在外壳程序中设置环境变量CROSS_COMPILE。
+Note that no changes to the Makefile or any other source files are necessary. 
+请注意，无需更改Makefile或任何其他源文件。
+For example using the ELDK on a 4xx CPU, please enter:
+例如，在4xx CPU上使用ELDK，请输入：
 	$ CROSS_COMPILE=ppc_4xx-
 	$ export CROSS_COMPILE
 
-U-Boot is intended to be simple to build. After installing the
-sources you must configure U-Boot for one specific board type. This
-is done by typing:
+U-Boot is intended to be simple to build. After installing the sources you must configure U-Boot for one specific board type.
+U-Boot旨在易于构建。安装源后，必须为一种特定的板类型配置U-Boot。
+ This is done by typing:
 
 	make NAME_defconfig
 
-where "NAME_defconfig" is the name of one of the existing configu-
-rations; see configs/*_defconfig for supported names.
-
-Note: for some boards special configuration names may exist; check if
-      additional information is available from the board vendor; for
-      instance, the TQM823L systems are available without (standard)
-      or with LCD support. You can select such additional "features"
-      when choosing the configuration, i. e.
-
+where "NAME_defconfig" is the name of one of the existing configurations; see configs/*_defconfig for supported names.
+其中“ NAME_defconfig”是现有配置之一的名称；有关支持的名称，请参见configs / * _ defconfig。
+Note: for some boards special configuration names may exist; check if additional information is available from the board vendor;
+ 注意：对于某些板，可能存在特殊的配置名称；检查主板供应商是否提供了其他信息；
+ for instance, the TQM823L systems are available without (standard) or with LCD support. 
+ 例如，TQM823L系统不带（标准）或LCD支持。
+ You can select such additional "features" when choosing the configuration, i. e.
+在选择配置时，您可以选择这些额外的“特性”，即。
       make TQM823L_defconfig
 	- will configure for a plain TQM823L, i. e. no LCD support
 
@@ -3022,17 +3023,16 @@ Note: for some boards special configuration names may exist; check if
       etc.
 
 
-Finally, type "make all", and you should get some working U-Boot
-images ready for download to / installation on your system:
-
+Finally, type "make all", and you should get some working U-Boot images ready for download to / installation on your system:
+最后，键入“ make all”，然后您应该准备好一些可以工作的U-Boot映像，以下载到/安装在系统上：
 - "u-boot.bin" is a raw binary image
 - "u-boot" is an image in ELF binary format
 - "u-boot.srec" is in Motorola S-Record format
 
-By default the build is performed locally and the objects are saved
-in the source directory. One of the two methods can be used to change
-this behavior and build U-Boot to some external directory:
-
+By default the build is performed locally and the objects are saved in the source directory. 
+默认情况下，构建是在本地执行的，并且对象保存在源目录中。
+One of the two methods can be used to change this behavior and build U-Boot to some external directory:
+可以使用以下两种方法之一来更改此行为并将U-Boot构建到某个外部目录：
 1. Add O= to the make command line invocations:
 
 	make O=/tmp/build distclean
@@ -3046,37 +3046,33 @@ this behavior and build U-Boot to some external directory:
 	make NAME_defconfig
 	make all
 
-Note that the command line "O=" setting overrides the KBUILD_OUTPUT environment
-variable.
-
-User specific CPPFLAGS, AFLAGS and CFLAGS can be passed to the compiler by
-setting the according environment variables KCPPFLAGS, KAFLAGS and KCFLAGS.
+Note that the command line "O=" setting overrides the KBUILD_OUTPUT environment variable.
+请注意，命令行“ O =“设置将覆盖KBUILD_OUTPUT环境变量。
+User specific CPPFLAGS, AFLAGS and CFLAGS can be passed to the compiler by setting the according environment variables KCPPFLAGS, KAFLAGS and KCFLAGS.
+通过设置相应的环境变量KCPPFLAGS，KAFLAGS和KCFLAGS，可以将用户特定的CPPFLAGS，AFL​​AGS和CFLAGS传递给编译器。
 For example to treat all compiler warnings as errors:
-
+例如，将所有编译器警告视为错误：
 	make KCFLAGS=-Werror
 
-Please be aware that the Makefiles assume you are using GNU make, so
-for instance on NetBSD you might need to use "gmake" instead of
-native "make".
+Please be aware that the Makefiles assume you are using GNU make, so for instance on NetBSD you might need to use "gmake" instead of native "make".
+请注意，Makefiles假定您正在使用GNU make，因此例如在NetBSD上，您可能需要使用“ gmake”而不是本机的“ make”。
 
-
-If the system board that you have is not listed, then you will need
-to port U-Boot to your hardware platform. To do this, follow these
-steps:
-
-1.  Create a new directory to hold your board specific code. Add any
-    files you need. In your board directory, you will need at least
-    the "Makefile" and a "<board>.c".
-2.  Create a new configuration file "include/configs/<board>.h" for
-    your board.
-3.  If you're porting U-Boot to a new CPU, then also create a new
-    directory to hold your CPU specific code. Add any files you need.
+If the system board that you have is not listed, then you will need to port U-Boot to your hardware platform. To do this, follow these steps:
+如果未列出系统板，则需要将U-Boot移植到硬件平台。为此，请按照下列步骤操作：
+1.  Create a new directory to hold your board specific code. Add any files you need. 
+1.创建一个新目录来保存您的主板代码。添加您需要的任何文件。
+    In your board directory, you will need at least  the "Makefile" and a "<board>.c".
+    在您的板目录中，至少需要“ Makefile”和“ <board> .c”。
+2.  Create a new configuration file "include/configs/<board>.h" for  your board.
+2.为您的板创建一个新的配置文件“ include / configs / <board> .h”。
+3.  If you're porting U-Boot to a new CPU, then also create a new directory to hold your CPU specific code. Add any files you need.
+3.如果要将U-Boot移植到新CPU，则还要创建一个新目录来保存您的CPU特定代码。添加您需要的任何文件。
 4.  Run "make <board>_defconfig" with your new name.
-5.  Type "make", and you should get a working "u-boot.srec" file
-    to be installed on your target system.
-6.  Debug and solve any problems that might arise.
-    [Of course, this last step is much harder than it sounds.]
-
+4.使用新名称运行“ make <board> _defconfig”。
+5.  Type "make", and you should get a working "u-boot.srec" file to be installed on your target system.
+5.键入“ make”，然后应该会在目标系统上安装一个有效的“ u-boot.srec”文件。
+6.  Debug and solve any problems that might arise. [Of course, this last step is much harder than it sounds.]
+6.调试并解决可能出现的任何问题。 [当然，这最后一步比听起来要难得多。]
 
 Testing of U-Boot Modifications, Ports to New Hardware, etc.:
 ==============================================================
@@ -3160,18 +3156,18 @@ For now: just type "help <command>".
 Environment Variables:
 ======================
 
-U-Boot supports user configuration using Environment Variables which
-can be made persistent by saving to Flash memory.
-
-Environment Variables are set using "setenv", printed using
-"printenv", and saved to Flash using "saveenv". Using "setenv"
-without a value can be used to delete a variable from the
-environment. As long as you don't save the environment you are
-working with an in-memory copy. In case the Flash area containing the
-environment is erased by accident, a default environment is provided.
-
+U-Boot supports user configuration using Environment Variables which can be made persistent by saving to Flash memory.
+U-Boot支持使用环境变量进行用户配置，可以通过将其保存到闪存中来使其持久化。
+Environment Variables are set using "setenv", printed using "printenv", and saved to Flash using "saveenv". 
+使用“ setenv”设置环境变量，使用“ printenv”打印，然后使用“ saveenv”保存到Flash。
+Using "setenv" without a value can be used to delete a variable from the environment. 
+使用不带值的“ setenv”可用于从环境中删除变量。
+As long as you don't save the environment you are working with an in-memory copy.
+只要不保存环境，您就在使用内存中副本。
+ In case the Flash area containing the environment is erased by accident, a default environment is provided.
+如果意外擦除了包含环境的Flash区域，则会提供默认环境。
 Some configuration options can be set using Environment Variables.
-
+可以使用环境变量设置某些配置选项。
 List of environment variables (most likely not complete):
 
   baudrate	- see CONFIG_BAUDRATE
@@ -3184,39 +3180,31 @@ List of environment variables (most likely not complete):
 
   bootfile	- Name of the image to load with TFTP
 
-  bootm_low	- Memory range available for image processing in the bootm
-		  command can be restricted. This variable is given as
-		  a hexadecimal number and defines lowest address allowed
-		  for use by the bootm command. See also "bootm_size"
-		  environment variable. Address defined by "bootm_low" is
-		  also the base of the initial memory mapping for the Linux
-		  kernel -- see the description of CONFIG_SYS_BOOTMAPSZ and
-		  bootm_mapsize.
+  bootm_low	- Memory range available for image processing in the bootm command can be restricted. 
+  bootm_low-可以限制bootm命令中可用于图像处理的内存范围。
+  This variable is given as a hexadecimal number and defines lowest address allowed for use by the bootm command.
+  该变量以十六进制数形式给出，并定义了bootm命令允许使用的最低地址。
+           See also "bootm_size"  environment variable. Address defined by "bootm_low" is also the base of the initial memory mapping for the Linux  kernel 
+       另请参见“ bootm_size”环境变量。 “ bootm_low”定义的地址也是Linux内核的初始内存映射的基础。
+          -- see the description of CONFIG_SYS_BOOTMAPSZ and  bootm_mapsize.
 
   bootm_mapsize - Size of the initial memory mapping for the Linux kernel.
-		  This variable is given as a hexadecimal number and it
-		  defines the size of the memory region starting at base
-		  address bootm_low that is accessible by the Linux kernel
-		  during early boot.  If unset, CONFIG_SYS_BOOTMAPSZ is used
-		  as the default value if it is defined, and bootm_size is
-		  used otherwise.
+  bootm_mapsize-Linux内核的初始内存映射的大小。
+		  This variable is given as a hexadecimal number and it defines the size of the memory region starting at base address bootm_low that is accessible by the Linux kernel  during early boot.  
+         该变量以十六进制数形式给出，它定义了从基地址bootm_low开始的内存区域的大小，Linux内核在早期引导期间可以访问该区域。
+          If unset, CONFIG_SYS_BOOTMAPSZ is used as the default value if it is defined, and bootm_size is used otherwise.
 
-  bootm_size	- Memory range available for image processing in the bootm
-		  command can be restricted. This variable is given as
-		  a hexadecimal number and defines the size of the region
-		  allowed for use by the bootm command. See also "bootm_low"
-		  environment variable.
+  bootm_size	- Memory range available for image processing in the bootm command can be restricted.
+   bootm_size-可以限制bootm命令中可用于图像处理的内存范围。
+   This variable is given as  a hexadecimal number and defines the size of the region  allowed for use by the bootm command. 
+ 该变量以十六进制数形式给出，并定义了bootm命令允许使用的区域的大小。
+   See also "bootm_low"  environment variable.
 
   bootstopkeysha256, bootdelaykey, bootstopkey	- See README.autoboot
 
-  updatefile	- Location of the software update file on a TFTP server, used
-		  by the automatic software update feature. Please refer to
-		  documentation in doc/README.update for more details.
+  updatefile	- Location of the software update file on a TFTP server, used by the automatic software update feature. Please refer to  documentation in doc/README.update for more details.
 
-  autoload	- if set to "no" (any string beginning with 'n'),
-		  "bootp" will just load perform a lookup of the
-		  configuration from the BOOTP server, but not try to
-		  load any image using TFTP
+  autoload	- if set to "no" (any string beginning with 'n'), "bootp" will just load perform a lookup of the configuration from the BOOTP server, but not try to  load any image using TFTP
 
   autostart	- if set to "yes", an image loaded using the "bootp",
 		  "rarpboot", "tftpboot" or "diskboot" commands will
@@ -3438,38 +3426,35 @@ only effect after the next boot (yes, that's just like Windoze :-).
 Callback functions for environment variables:
 ---------------------------------------------
 
-For some environment variables, the behavior of u-boot needs to change
-when their values are changed.  This functionality allows functions to
-be associated with arbitrary variables.  On creation, overwrite, or
-deletion, the callback will provide the opportunity for some side
-effect to happen or for the change to be rejected.
-
-The callbacks are named and associated with a function using the
-U_BOOT_ENV_CALLBACK macro in your board or driver code.
-
-These callbacks are associated with variables in one of two ways.  The
-static list can be added to by defining CONFIG_ENV_CALLBACK_LIST_STATIC
-in the board configuration to a string that defines a list of
-associations.  The list must be in the following format:
-
+For some environment variables, the behavior of u-boot needs to change when their values are changed.  
+对于某些环境变量，更改其值时，u-boot的行为需要更改。
+This functionality allows functions to be associated with arbitrary variables.  
+此功能允许将函数与任意变量关联。
+On creation, overwrite, or deletion, the callback will provide the opportunity for some side effect to happen or for the change to be rejected.
+在创建，覆盖或删除时，回调将为发生某些副作用或拒绝更改提供机会。
+The callbacks are named and associated with a function using the U_BOOT_ENV_CALLBACK macro in your board or driver code.
+使用您的开发板或驱动程序代码中的U_BOOT_ENV_CALLBACK宏命名回调并将其与函数关联。
+These callbacks are associated with variables in one of two ways. 
+这些回调以两种方式之一与变量关联。
+ The static list can be added to by defining CONFIG_ENV_CALLBACK_LIST_STATIC in the board configuration to a string that defines a list of associations.  The list must be in the following format:
+可以通过在板配置中将CONFIG_ENV_CALLBACK_LIST_STATIC定义为定义关联列表的字符串来添加静态列表。该列表必须采用以下格式：
 	entry = variable_name[:callback_name]
 	list = entry[,list]
 
-If the callback name is not specified, then the callback is deleted.
-Spaces are also allowed anywhere in the list.
-
-Callbacks can also be associated by defining the ".callbacks" variable
-with the same list format above.  Any association in ".callbacks" will
-override any association in the static list. You can define
-CONFIG_ENV_CALLBACK_LIST_DEFAULT to a list (string) to define the
-".callbacks" environment variable in the default or embedded environment.
-
-If CONFIG_REGEX is defined, the variable_name above is evaluated as a
-regular expression. This allows multiple variables to be connected to
-the same callback without explicitly listing them all out.
-
+If the callback name is not specified, then the callback is deleted.Spaces are also allowed anywhere in the list.
+如果未指定回调名称，则删除该回调。列表中的任意位置也可以使用空格。
+Callbacks can also be associated by defining the ".callbacks" variable with the same list format above.  
+也可以通过使用上面相同的列表格式定义“ .callbacks”变量来关联回调。
+Any association in ".callbacks" will override any association in the static list. 
+“ .callbacks”中的任何关联都将覆盖静态列表中的任何关联。
+You can define CONFIG_ENV_CALLBACK_LIST_DEFAULT to a list (string) to define the ".callbacks" environment variable in the default or embedded environment.
+您可以将CONFIG_ENV_CALLBACK_LIST_DEFAULT定义为列表（字符串），以在默认或嵌入式环境中定义“ .callbacks”环境变量。
+If CONFIG_REGEX is defined, the variable_name above is evaluated as a regular expression. 
+如果定义了CONFIG_REGEX，则上面的variable_name将作为正则表达式求值。
+This allows multiple variables to be connected to the same callback without explicitly listing them all out.
+这允许将多个变量连接到同一回调，而无需明确列出所有变量。
 The signature of the callback functions is:
-
+回调函数的签名为：
     int callback(const char *name, const char *value, enum env_op op, int flags)
 
 * name - changed environment variable
@@ -3484,8 +3469,9 @@ Command Line Parsing:
 =====================
 
 There are two different command line parsers available with U-Boot:
+U-Boot提供了两种不同的命令行解析器：
 the old "simple" one, and the much more powerful "hush" shell:
-
+旧的“简单”外壳，以及功能更强大的“静默”外壳：
 Old, simple command line parser:
 --------------------------------
 
@@ -3512,85 +3498,72 @@ Hush shell:
 General rules:
 --------------
 
-(1) If a command line (or an environment variable executed by a "run"
-    command) contains several commands separated by semicolon, and
-    one of these commands fails, then the remaining commands will be
-    executed anyway.
-
-(2) If you execute several variables with one call to run (i. e.
-    calling run with a list of variables as arguments), any failing
-    command will cause "run" to terminate, i. e. the remaining
-    variables are not executed.
-
+(1) If a command line (or an environment variable executed by a "run" command) contains several commands separated by semicolon, 
+（1）如果命令行（或由“运行”命令执行的环境变量）包含多个用分号分隔的命令，
+and one of these commands fails, then the remaining commands will be executed anyway.
+并且其中一个命令失败，那么其余命令将始终执行。
+(2) If you execute several variables with one call to run (i. e. calling run with a list of variables as arguments), 
+（2）如果您通过一次运行调用来执行多个变量（即，以变量列表作为参数调用run），
+any failing command will cause "run" to terminate, i. e. the remaining variables are not executed.
+任何失败的命令都将导致“运行”终止，即e。其余变量不执行。
 Note for Redundant Ethernet Interfaces:
 =======================================
 
-Some boards come with redundant Ethernet interfaces; U-Boot supports
-such configurations and is capable of automatic selection of a
-"working" interface when needed. MAC assignment works as follows:
-
-Network interfaces are numbered eth0, eth1, eth2, ... Corresponding
-MAC addresses can be stored in the environment as "ethaddr" (=>eth0),
-"eth1addr" (=>eth1), "eth2addr", ...
-
-If the network interface stores some valid MAC address (for instance
-in SROM), this is used as default address if there is NO correspon-
-ding setting in the environment; if the corresponding environment
-variable is set, this overrides the settings in the card; that means:
-
-o If the SROM has a valid MAC address, and there is no address in the
-  environment, the SROM's address is used.
-
-o If there is no valid address in the SROM, and a definition in the
-  environment exists, then the value from the environment variable is
-  used.
-
-o If both the SROM and the environment contain a MAC address, and
-  both addresses are the same, this MAC address is used.
-
-o If both the SROM and the environment contain a MAC address, and the
-  addresses differ, the value from the environment is used and a
-  warning is printed.
-
-o If neither SROM nor the environment contain a MAC address, an error
-  is raised. If CONFIG_NET_RANDOM_ETHADDR is defined, then in this case
-  a random, locally-assigned MAC is used.
-
-If Ethernet drivers implement the 'write_hwaddr' function, valid MAC addresses
-will be programmed into hardware as part of the initialization process.	 This
-may be skipped by setting the appropriate 'ethmacskip' environment variable.
+Some boards come with redundant Ethernet interfaces; U-Boot supports such configurations and is capable of automatic selection of a "working" interface when needed. 
+有些主板带有冗余的以太网接口。 U-Boot支持此类配置，并能够在需要时自动选择“工作”界面。
+MAC assignment works as follows:
+MAC分配的工作方式如下：
+Network interfaces are numbered eth0, eth1, eth2, ... Corresponding MAC addresses can be stored in the environment as "ethaddr" (=>eth0), "eth1addr" (=>eth1), "eth2addr", ...
+网络接口编号为eth0，eth1，eth2，... ...相应的MAC地址可以在环境中存储为“ ethaddr”（=> eth0），“ eth1addr”（=> eth1），“ eth2addr”，...
+If the network interface stores some valid MAC address (for instance n SROM),
+如果网络接口存储了一些有效的MAC地址（例如n SROM）， 
+this is used as default address if there is NO corresponding setting in the environment;
+如果环境中没有相应的设置，它将用作默认地址；
+ if the corresponding environment variable is set, this overrides the settings in the card; that means:
+如果设置了相应的环境变量，它将覆盖卡中的设置；这意味着：
+ o If the SROM has a valid MAC address, and there is no address in the environment, the SROM's address is used.
+如果SROM具有有效的MAC地址，并且环境中没有地址，则使用SROM的地址。
+o If there is no valid address in the SROM, and a definition in the environment exists, then the value from the environment variable is used.
+o如果SROM中没有有效地址，并且环境中存在定义，则使用环境变量中的值。
+If both the SROM and the environment contain a MAC address, and both addresses are the same, this MAC address is used.
+如果SROM和环境都包含MAC地址，并且两个地址都相同，则使用此MAC地址。
+o If both the SROM and the environment contain a MAC address, and the addresses differ, the value from the environment is used and a  warning is printed.
+o如果SROM和环境都包含MAC地址，并且地址不同，则使用环境中的值并打印警告。
+o If neither SROM nor the environment contain a MAC address, an error  is raised.
+o如果SROM或环境都不包含MAC地址，则会引发错误。
+   If CONFIG_NET_RANDOM_ETHADDR is defined, then in this case a random, locally-assigned MAC is used.
+如果定义了CONFIG_NET_RANDOM_ETHADDR，则在这种情况下，将使用随机的，本地分配的MAC。
+If Ethernet drivers implement the 'write_hwaddr' function, valid MAC addresses will be programmed into hardware as part of the initialization process.	
+ 如果以太网驱动程序实现了“ write_hwaddr”功能，则在初始化过程中会将有效的MAC地址编程到硬件中。
+ This may be skipped by setting the appropriate 'ethmacskip' environment variable.
+可以通过设置适当的'ethmacskip'环境变量来跳过此操作。
 The naming convention is as follows:
+命名约定如下：
 "ethmacskip" (=>eth0), "eth1macskip" (=>eth1) etc.
 
 Image Formats:
 ==============
 
-U-Boot is capable of booting (and performing other auxiliary operations on)
-images in two formats:
-
+U-Boot is capable of booting (and performing other auxiliary operations on) images in two formats:
+U-Boot能够以两种格式引导（并对其执行其他辅助操作）映像：
 New uImage format (FIT)
 -----------------------
 
-Flexible and powerful format based on Flattened Image Tree -- FIT (similar
-to Flattened Device Tree). It allows the use of images with multiple
-components (several kernels, ramdisks, etc.), with contents protected by
-SHA1, MD5 or CRC32. More details are found in the doc/uImage.FIT directory.
-
+Flexible and powerful format based on Flattened Image Tree -- FIT (similarto Flattened Device Tree). 
+基于扁平化图像树-FIT（类似于扁平化设备树）的灵活强大的格式。
+It allows the use of images with multiple components (several kernels, ramdisks, etc.), with contents protected by SHA1, MD5 or CRC32. More details are found in the doc/uImage.FIT directory.
+它允许使用具有多个组件（几个内核，ramdisk等）的映像，其内容受SHA1，MD5或CRC32保护。在doc / uImage.FIT目录中找到更多详细信息。
 
 Old uImage format
 -----------------
 
-Old image format is based on binary files which can be basically anything,
-preceded by a special header; see the definitions in include/image.h for
-details; basically, the header defines the following image properties:
-
-* Target Operating System (Provisions for OpenBSD, NetBSD, FreeBSD,
-  4.4BSD, Linux, SVR4, Esix, Solaris, Irix, SCO, Dell, NCR, VxWorks,
-  LynxOS, pSOS, QNX, RTEMS, INTEGRITY;
-  Currently supported: Linux, NetBSD, VxWorks, QNX, RTEMS, LynxOS,
-  INTEGRITY).
-* Target CPU Architecture (Provisions for Alpha, ARM, Intel x86,
-  IA64, MIPS, NDS32, Nios II, PowerPC, IBM S390, SuperH, Sparc, Sparc 64 Bit;
+Old image format is based on binary files which can be basically anything,preceded by a special header; 
+旧的图像格式基于二进制文件，该文件基本上可以是任何文件，并带有特殊的标头。
+see the definitions in include/image.h for details; basically, the header defines the following image properties:
+有关详细信息，请参见include / image.h中的定义；标题基本上定义了以下图像属性：
+* Target Operating System (Provisions for OpenBSD, NetBSD, FreeBSD,4.4BSD, Linux, SVR4, Esix, Solaris, Irix, SCO, Dell, NCR, VxWorks,LynxOS, pSOS, QNX, RTEMS, INTEGRITY;
+  Currently supported: Linux, NetBSD, VxWorks, QNX, RTEMS, LynxOS,INTEGRITY).
+* Target CPU Architecture (Provisions for Alpha, ARM, Intel x86,A64, MIPS, NDS32, Nios II, PowerPC, IBM S390, SuperH, Sparc, Sparc 64 Bit;
   Currently supported: ARM, Intel x86, MIPS, NDS32, Nios II, PowerPC).
 * Compression Type (uncompressed, gzip, bzip2)
 * Load Address
@@ -3598,38 +3571,32 @@ details; basically, the header defines the following image properties:
 * Image Name
 * Image Timestamp
 
-The header is marked by a special Magic Number, and both the header
-and the data portions of the image are secured against corruption by
-CRC32 checksums.
-
+The header is marked by a special Magic Number, and both the header and the data portions of the image are secured against corruption by CRC32 checksums.
+标头由特殊的魔术数字标记，并且标头和图像的数据部分均通过CRC32校验和进行保护，以防止损坏。
 
 Linux Support:
 ==============
 
-Although U-Boot should support any OS or standalone application
-easily, the main focus has always been on Linux during the design of
-U-Boot.
-
-U-Boot includes many features that so far have been part of some
-special "boot loader" code within the Linux kernel. Also, any
-"initrd" images to be used are no longer part of one big Linux image;
-instead, kernel and "initrd" are separate images. This implementation
-serves several purposes:
-
-- the same features can be used for other OS or standalone
-  applications (for instance: using compressed images to reduce the
-  Flash memory footprint)
-
-- it becomes much easier to port new Linux kernel versions because
-  lots of low-level, hardware dependent stuff are done by U-Boot
-
-- the same Linux kernel image can now be used with different "initrd"
-  images; of course this also means that different kernel images can
-  be run with the same "initrd". This makes testing easier (you don't
-  have to build a new "zImage.initrd" Linux image when you just
-  change a file in your "initrd"). Also, a field-upgrade of the
-  software is easier now.
-
+Although U-Boot should support any OS or standalone application easily, the main focus has always been on Linux during the design of U-Boot.
+尽管U-Boot应该轻松支持任何OS或独立应用程序，但在设计U-Boot时始终将重点放在Linux上。
+U-Boot includes many features that so far have been part of some special "boot loader" code within the Linux kernel. 
+到目前为止，U-Boot包含许多功能，这些功能已经成为Linux内核中某些特殊的“引导程序”代码的一部分。
+Also, any "initrd" images to be used are no longer part of one big Linux image;
+而且，要使用的任何“初始”映像都不再是一个大Linux映像的一部分；
+instead, kernel and "initrd" are separate images. This implementation serves several purposes:
+相反，内核和“ initrd”是单独的映像。此实现有几个目的：
+- the same features can be used for other OS or standalone applications (for instance: using compressed images to reduce the Flash memory footprint)
+-相同的功能可用于其他OS或独立应用程序（例如：使用压缩映像以减少Flash占用空间）
+- it becomes much easier to port new Linux kernel versions because lots of low-level, hardware dependent stuff are done by U-Boot
+-移植新的Linux内核版本变得容易得多，因为许多底层的，与硬件相关的工作都是由U-Boot完成的
+- the same Linux kernel image can now be used with different "initrd" images;
+-现在可以将同一Linux内核映像与不同的“ initrd”映像一起使用；
+ of course this also means that different kernel images can be run with the same "initrd".
+当然，这也意味着可以使用相同的“ initrd”运行不同的内核映像。
+  This makes testing easier (you don't have to build a new "zImage.initrd" Linux image when you just change a file in your "initrd"). 
+  这使测试更加容易（只需在“ initrd”中更改文件，就不必构建新的“ zImage.initrd” Linux映像）。
+  Also, a field-upgrade of the software is easier now.
+而且，现在可以更轻松地对该软件进行现场升级。
 
 Linux HOWTO:
 ============
@@ -3637,42 +3604,39 @@ Linux HOWTO:
 Porting Linux to U-Boot based systems:
 ---------------------------------------
 
-U-Boot cannot save you from doing all the necessary modifications to
-configure the Linux device drivers for use with your target hardware
-(no, we don't intend to provide a full virtual machine interface to
-Linux :-).
-
+U-Boot cannot save you from doing all the necessary modifications to configure the Linux device drivers for use with your target hardware
+U-Boot无法避免您进行所有必要的修改来配置Linux设备驱动程序以与目标硬件一起使用
+(no, we don't intend to provide a full virtual machine interface to Linux :-).
+（不，我们不打算为Linux提供完整的虚拟机接口：-）。
 But now you can ignore ALL boot loader code (in arch/powerpc/mbxboot).
-
-Just make sure your machine specific header file (for instance
-include/asm-ppc/tqm8xx.h) includes the same definition of the Board
-Information structure as we define in include/asm-<arch>/u-boot.h,
-and make sure that your definition of IMAP_ADDR uses the same value
-as your U-Boot configuration in CONFIG_SYS_IMMR.
-
+但是现在您可以忽略所有引导加载程序代码（在arch / powerpc / mbxboot中）。
+Just make sure your machine specific header file (for instance include/asm-ppc/tqm8xx.h) includes the same definition of the Board Information structure as we define in include/asm-<arch>/u-boot.h,
+只要确保您的计算机专用头文件（例如include / asm-ppc / tqm8xx.h）包含与我们在include / asm- <arch> /u-boot.h中定义的Board Information结构相同的定义，
+and make sure that your definition of IMAP_ADDR uses the same value as your U-Boot configuration in CONFIG_SYS_IMMR.
+并确保您对IMAP_ADDR的定义使用与CONFIG_SYS_IMMR中的U-Boot配置相同的值。
 Note that U-Boot now has a driver model, a unified model for drivers.
-If you are adding a new driver, plumb it into driver model. If there
-is no uclass available, you are encouraged to create one. See
+请注意，U-Boot现在具有一个驱动程序模型，这是驱动程序的统一模型。
+If you are adding a new driver, plumb it into driver model. If there is no uclass available, you are encouraged to create one. 
+如果要添加新的驱动程序，请将其放入驱动程序模型。如果没有可用的uclass，建议您创建一个。
+See
 doc/driver-model.
 
 
 Configuring the Linux kernel:
 -----------------------------
 
-No specific requirements for U-Boot. Make sure you have some root
-device (initial ramdisk, NFS) for your target system.
-
+No specific requirements for U-Boot. Make sure you have some root device (initial ramdisk, NFS) for your target system.
+对U-Boot没有特殊要求。确保您的目标系统具有一些根设备（初始ramdisk，NFS）。f
 
 Building a Linux Image:
 -----------------------
 
-With U-Boot, "normal" build targets like "zImage" or "bzImage" are
-not used. If you use recent kernel source, a new build target
-"uImage" will exist which automatically builds an image usable by
-U-Boot. Most older kernels also have support for a "pImage" target,
-which was introduced for our predecessor project PPCBoot and uses a
-100% compatible format.
-
+With U-Boot, "normal" build targets like "zImage" or "bzImage" are not used. 
+对于U-Boot，不使用“ zImage”或“ bzImage”之类的“常规”构建目标。
+If you use recent kernel source, a new build target "uImage" will exist which automatically builds an image usable by U-Boot.
+如果您使用最新的内核源，则将存在一个新的构建目标“ uImage”，该目标将自动构建可由U-Boot使用的映像。
+ Most older kernels also have support for a "pImage" target,which was introduced for our predecessor project PPCBoot and uses a 100% compatible format.
+大多数较早的内核还支持“ pImage”目标，该目标是为我们的前一个项目PPCBoot引入的，并使用100％兼容的格式。
 Example:
 
 	make TQM850L_defconfig
@@ -3680,9 +3644,9 @@ Example:
 	make dep
 	make uImage
 
-The "uImage" build target uses a special tool (in 'tools/mkimage') to
-encapsulate a compressed Linux kernel image with header	 information,
-CRC32 checksum etc. for use with U-Boot. This is what we are doing:
+The "uImage" build target uses a special tool (in 'tools/mkimage') to encapsulate a compressed Linux kernel image with header information, CRC32 checksum etc. for use with U-Boot. 
+“ uImage”构建目标使用一种特殊的工具（在'tools / mkimage'中）来封装带有标题信息，CRC32校验和等的压缩Linux内核映像，以用于U-Boot。
+This is what we are doing:
 
 * build a standard "vmlinux" kernel image (in ELF binary format):
 
@@ -3703,26 +3667,19 @@ CRC32 checksum etc. for use with U-Boot. This is what we are doing:
 		-d linux.bin.gz uImage
 
 
-The "mkimage" tool can also be used to create ramdisk images for use
-with U-Boot, either separated from the Linux kernel image, or
-combined into one file. "mkimage" encapsulates the images with a 64
-byte header containing information about target architecture,
-operating system, image type, compression method, entry points, time
-stamp, CRC32 checksums, etc.
-
-"mkimage" can be called in two ways: to verify existing images and
-print the header information, or to build new images.
-
-In the first form (with "-l" option) mkimage lists the information
-contained in the header of an existing U-Boot image; this includes
-checksum verification:
-
+The "mkimage" tool can also be used to create ramdisk images for use with U-Boot, either separated from the Linux kernel image, or combined into one file. 
+“ mkimage”工具还可用于创建与U-Boot一起使用的ramdisk映像，该映像可以与Linux内核映像分开，也可以合并为一个文件。
+"mkimage" encapsulates the images with a 64 byte header containing information about target architecture,operating system, image type, compression method, entry points, time stamp, CRC32 checksums, etc.
+“ mkimage”使用64字节的标题封装图像，其中包含有关目标体系结构，操作系统，图像类型，压缩方法，入口点，时间戳，CRC32校验和等信息。
+"mkimage" can be called in two ways: to verify existing images and print the header information, or to build new images.
+可以通过两种方式调用“ mkimage”：验证现有图像并打印标题信息，或构建新图像。
+In the first form (with "-l" option) mkimage lists the information contained in the header of an existing U-Boot image; this includes checksum verification:
+在第一种形式（带有“ -l”选项）中，mkimage列出了现有U-Boot映像的标题中包含的信息；这包括校验和验证：
 	tools/mkimage -l image
 	  -l ==> list image header information
 
-The second form (with "-d" option) is used to build a U-Boot image
-from a "data file" which is used as image payload:
-
+The second form (with "-d" option) is used to build a U-Boot image from a "data file" which is used as image payload:
+第二种形式（带有“ -d”选项）用于从用作数据有效负载的“数据文件”构建U-Boot图像：
 	tools/mkimage -A arch -O os -T type -C comp -a addr -e ep \
 		      -n name -d data_file image
 	  -A ==> set architecture to 'arch'
@@ -3734,15 +3691,13 @@ from a "data file" which is used as image payload:
 	  -n ==> set image name to 'name'
 	  -d ==> use image data from 'datafile'
 
-Right now, all Linux kernels for PowerPC systems use the same load
-address (0x00000000), but the entry point address depends on the
-kernel version:
-
+Right now, all Linux kernels for PowerPC systems use the same load address (0x00000000), but the entry point address depends on the kernel version:
+现在，用于PowerPC系统的所有Linux内核都使用相同的加载地址（0x00000000），但是入口点地址取决于内核版本：
 - 2.2.x kernels have the entry point at 0x0000000C,
 - 2.3.x and later kernels have the entry point at 0x00000000.
 
 So a typical call to build a U-Boot image would read:
-
+因此，构建U-Boot映像的典型调用为：
 	-> tools/mkimage -n '2.4.4 kernel for TQM850L' \
 	> -A ppc -O linux -T kernel -C gzip -a 0 -e 0 \
 	> -d /opt/elsk/ppc_8xx/usr/src/linux-2.4.4/arch/powerpc/coffboot/vmlinux.gz \
@@ -3755,7 +3710,7 @@ So a typical call to build a U-Boot image would read:
 	Entry Point:  0x00000000
 
 To verify the contents of the image (or check for corruption):
-
+要验证图像的内容（或检查是否损坏）：
 	-> tools/mkimage -l examples/uImage.TQM850L
 	Image Name:   2.4.4 kernel for TQM850L
 	Created:      Wed Jul 19 02:34:59 2000
@@ -3764,11 +3719,10 @@ To verify the contents of the image (or check for corruption):
 	Load Address: 0x00000000
 	Entry Point:  0x00000000
 
-NOTE: for embedded systems where boot time is critical you can trade
-speed for memory and install an UNCOMPRESSED image instead: this
-needs more space in Flash, but boots much faster since it does not
-need to be uncompressed:
-
+NOTE: for embedded systems where boot time is critical you can trade speed for memory and install an UNCOMPRESSED image instead:
+注意：对于启动时间很关键的嵌入式系统，您可以交换内存速度并安装UNCOMPRESSED映像：
+  this needs more space in Flash, but boots much faster since it does not need to be uncompressed:
+这需要Flash中更多的空间，但由于不需要解压缩，因此启动速度要快得多：
 	-> gunzip /opt/elsk/ppc_8xx/usr/src/linux-2.4.4/arch/powerpc/coffboot/vmlinux.gz
 	-> tools/mkimage -n '2.4.4 kernel for TQM850L' \
 	> -A ppc -O linux -T kernel -C none -a 0 -e 0 \
@@ -3782,9 +3736,8 @@ need to be uncompressed:
 	Entry Point:  0x00000000
 
 
-Similar you can build U-Boot images from a 'ramdisk.image.gz' file
-when your kernel is intended to use an initial ramdisk:
-
+Similar you can build U-Boot images from a 'ramdisk.image.gz' file when your kernel is intended to use an initial ramdisk:
+类似地，当内核打算使用初始ramdisk时，可以从ramdisk.image.gz文件构建U-Boot映像：
 	-> tools/mkimage -n 'Simple Ramdisk Image' \
 	> -A ppc -O linux -T ramdisk -C gzip \
 	> -d /LinuxPPC/images/SIMPLE-ramdisk.image.gz examples/simple-initrd
@@ -3795,11 +3748,10 @@ when your kernel is intended to use an initial ramdisk:
 	Load Address: 0x00000000
 	Entry Point:  0x00000000
 
-The "dumpimage" is a tool to disassemble images built by mkimage. Its "-i"
-option performs the converse operation of the mkimage's second form (the "-d"
-option). Given an image built by mkimage, the dumpimage extracts a "data file"
-from the image:
-
+The "dumpimage" is a tool to disassemble images built by mkimage. Its "-i" option performs the converse operation of the mkimage's second form (the "-d" option). 
+“ dumpimage”是用于分解由mkimage构建的图像的工具。它的“ -i”选项执行mkimage第二种形式的相反操作（“ -d”选项）。
+Given an image built by mkimage, the dumpimage extracts a "data file" from the image:
+给定由mkimage构建的图像，dumpimage从图像中提取“数据文件”：
 	tools/dumpimage -i image -T type -p position data_file
 	  -i ==> extract from the 'image' a specific 'data_file'
 	  -T ==> set image type to 'type'
@@ -3809,20 +3761,16 @@ from the image:
 Installing a Linux Image:
 -------------------------
 
-To downloading a U-Boot image over the serial (console) interface,
-you must convert the image to S-Record format:
-
+To downloading a U-Boot image over the serial (console) interface, you must convert the image to S-Record format:
+要通过串行（控制台）界面下载U-Boot映像，必须将映像转换为S-Record格式：
 	objcopy -I binary -O srec examples/image examples/image.srec
 
-The 'objcopy' does not understand the information in the U-Boot
-image header, so the resulting S-Record file will be relative to
-address 0x00000000. To load it to a given address, you need to
-specify the target address as 'offset' parameter with the 'loads'
-command.
-
-Example: install the image to address 0x40100000 (which on the
-TQM8xxL is in the first Flash bank):
-
+The 'objcopy' does not understand the information in the U-Boot image header, so the resulting S-Record file will be relative to address 0x00000000. 
+'objcopy'无法理解U-Boot映像头中的信息，因此生成的S-Record文件将相对于地址0x00000000。
+To load it to a given address, you need to specify the target address as 'offset' parameter with the 'loads' command.
+要将其加载到给定地址，您需要使用“ loads”命令将目标地址指定为“ offset”参数。
+Example: install the image to address 0x40100000 (which on the TQM8xxL is in the first Flash bank):
+示例：将映像安装到地址0x40100000（在TQM8xxL上位于第一个Flash库中）：
 	=> erase 40100000 401FFFFF
 
 	.......... done
@@ -3840,9 +3788,9 @@ TQM8xxL is in the first Flash bank):
 
 
 You can check the success of the download using the 'iminfo' command;
-this includes a checksum verification so you can be sure no data
-corruption happened:
-
+您可以使用“ iminfo”命令检查下载是否成功；
+this includes a checksum verification so you can be sure no data corruption happened:
+这包括校验和验证，因此您可以确定没有发生数据损坏：
 	=> imi 40100000
 
 	## Checking Image at 40100000 ...
@@ -3857,12 +3805,12 @@ corruption happened:
 Boot Linux:
 -----------
 
-The "bootm" command is used to boot an application that is stored in
-memory (RAM or Flash). In case of a Linux kernel image, the contents
-of the "bootargs" environment variable is passed to the kernel as
-parameters. You can check and modify this variable using the
-"printenv" and "setenv" commands:
-
+The "bootm" command is used to boot an application that is stored in memory (RAM or Flash).
+“ bootm”命令用于引导存储在内存（RAM或闪存）中的应用程序。
+ In case of a Linux kernel image, the contents of the "bootargs" environment variable is passed to the kernel as parameters. 
+如果是Linux内核映像，则将“ bootargs”环境变量的内容作为参数传递给内核。
+You can check and modify this variable using the "printenv" and "setenv" commands:
+您可以使用“ printenv”和“ setenv”命令检查和修改此变量：
 
 	=> printenv bootargs
 	bootargs=root=/dev/ram
@@ -3888,10 +3836,8 @@ parameters. You can check and modify this variable using the
 	Memory: 15208k available (700k kernel code, 444k data, 32k init) [c0000000,c1000000]
 	...
 
-If you want to boot a Linux kernel with initial RAM disk, you pass
-the memory addresses of both the kernel and the initrd image (PPBCOOT
-format!) to the "bootm" command:
-
+If you want to boot a Linux kernel with initial RAM disk, you pass the memory addresses of both the kernel and the initrd image (PPBCOOT format!) to the "bootm" command:
+如果要使用初始RAM磁盘引导Linux内核，请将内核和initrd映像（PPBCOOT格式！）的内存地址都传递给“ bootm”命令：
 	=> imi 40100000 40200000
 
 	## Checking Image at 40100000 ...
@@ -3940,11 +3886,10 @@ format!) to the "bootm" command:
 Boot Linux and pass a flat device tree:
 -----------
 
-First, U-Boot must be compiled with the appropriate defines. See the section
-titled "Linux Kernel Interface" above for a more in depth explanation. The
-following is an example of how to start a kernel and pass an updated
-flat device tree:
-
+First, U-Boot must be compiled with the appropriate defines. See the section titled "Linux Kernel Interface" above for a more in depth explanation. 
+首先，必须使用适当的定义编译U-Boot。有关更深入的说明，请参见上面标题为“ Linux内核接口”的部分。
+The following is an example of how to start a kernel and pass an updated flat device tree:
+以下是如何启动内核并传递更新的平面设备树的示例：
 => print oftaddr
 oftaddr=0x300000
 => print oft
@@ -3991,53 +3936,45 @@ More About U-Boot Image Types:
 
 U-Boot supports the following image types:
 
-   "Standalone Programs" are directly runnable in the environment
-	provided by U-Boot; it is expected that (if they behave
-	well) you can continue to work in U-Boot after return from
-	the Standalone Program.
-   "OS Kernel Images" are usually images of some Embedded OS which
-	will take over control completely. Usually these programs
-	will install their own set of exception handlers, device
-	drivers, set up the MMU, etc. - this means, that you cannot
-	expect to re-enter U-Boot except by resetting the CPU.
-   "RAMDisk Images" are more or less just data blocks, and their
-	parameters (address, size) are passed to an OS kernel that is
-	being started.
-   "Multi-File Images" contain several images, typically an OS
-	(Linux) kernel image and one or more data images like
-	RAMDisks. This construct is useful for instance when you want
-	to boot over the network using BOOTP etc., where the boot
-	server provides just a single image file, but you want to get
-	for instance an OS kernel and a RAMDisk image.
-
-	"Multi-File Images" start with a list of image sizes, each
-	image size (in bytes) specified by an "uint32_t" in network
-	byte order. This list is terminated by an "(uint32_t)0".
-	Immediately after the terminating 0 follow the images, one by
-	one, all aligned on "uint32_t" boundaries (size rounded up to
-	a multiple of 4 bytes).
-
-   "Firmware Images" are binary images containing firmware (like
-	U-Boot or FPGA images) which usually will be programmed to
-	flash memory.
-
-   "Script files" are command sequences that will be executed by
-	U-Boot's command interpreter; this feature is especially
-	useful when you configure U-Boot to use a real shell (hush)
-	as command interpreter.
-
+   "Standalone Programs" are directly runnable in the environment provided by U-Boot; 
+  “独立程序”可以在U-Boot提供的环境中直接运行；
+   it is expected that (if they be have well) you can continue to work in U-Boot after return from the Standalone Program.
+   从独立程序返回后，您可以（如果他们过得很好）继续在U-Boot中工作。
+   "OS Kernel Images" are usually images of some Embedded OS which will take over control completely. 
+ “ OS内核映像”通常是某些嵌入式OS的映像，它将完全接管控制权。
+   Usually these programs will install their own set of exception handlers, device drivers, set up the MMU, etc. 
+  通常，这些程序将安装它们自己的一组异常处理程序，设备驱动程序，设置MMU等。
+   - this means, that you cannot expect to re-enter U-Boot except by resetting the CPU.
+  -这意味着，除非复位CPU，否则您不能期望重新进入U-Boot。
+   "RAMDisk Images" are more or less just data blocks, and their parameters (address, size) are passed to an OS kernel that is	being started.
+  “ RAMDisk映像”或多或少只是数据块，并且它们的参数（地址，大小）被传递到正在启动的OS内核。
+   "Multi-File Images" contain several images, typically an OS (Linux) kernel image and one or more data images like RAMDisks. 
+  “多文件映像”包含多个映像，通常是OS（Linux）内核映像，以及一个或多个数据映像，例如RAMDisk。
+    This construct is useful for instance when you want to boot over the network using BOOTP etc., where the boot server provides just a single image file, but you want to get for instance an OS kernel and a RAMDisk image.
+例如，当您想使用BOOTP等通过网络进行引导时，此构造很有用，其中引导服务器仅提供单个映像文件，但是您想要获取例如OS内核和RAMDisk映像。
+	"Multi-File Images" start with a list of image sizes, each image size (in bytes) specified by an "uint32_t" in network byte order. 
+  “多文件图像”以图像大小列表开头，每个图像大小（以字节为单位）由“ uint32_t”以网络字节顺序指定。
+    This list is terminated by an "(uint32_t)0".
+    该列表以“（uint32_t）0”终止。
+	Immediately after the terminating 0 follow the images, one by one, all aligned on "uint32_t" boundaries (size rounded up to a multiple of 4 bytes).
+终止0后立即紧跟图像，所有图像都在“ uint32_t”边界上对齐（大小四舍五入为4字节的倍数）。
+   "Firmware Images" are binary images containing firmware (like U-Boot or FPGA images) which usually will be programmed to flash memory.
+“固件映像”是包含固件的二进制映像（如U-Boot或FPGA映像），通常会被编程到闪存中。
+   "Script files" are command sequences that will be executed by U-Boot's command interpreter;
+   “脚本文件”是将由U-Boot的命令解释器执行的命令序列；
+    this feature is especially useful when you configure U-Boot to use a real shell (hush)	as command interpreter.
+当您将U-Boot配置为使用真实的shell（静默）作为命令解释器时，此功能特别有用。
 Booting the Linux zImage:
 -------------------------
 
-On some platforms, it's possible to boot Linux zImage. This is done
-using the "bootz" command. The syntax of "bootz" command is the same
-as the syntax of "bootm" command.
-
-Note, defining the CONFIG_SUPPORT_RAW_INITRD allows user to supply
-kernel with raw initrd images. The syntax is slightly different, the
-address of the initrd must be augmented by it's size, in the following
-format: "<initrd addres>:<initrd size>".
-
+On some platforms, it's possible to boot Linux zImage. This is done using the "bootz" command. 
+在某些平台上，可以启动Linux zImage。这是使用“ bootz”命令完成的。
+The syntax of "bootz" command is the same as the syntax of "bootm" command.
+“ bootz”命令的语法与“ bootm”命令的语法相同。
+Note, defining the CONFIG_SUPPORT_RAW_INITRD allows user to supply kernel with raw initrd images. 
+注意，定义CONFIG_SUPPORT_RAW_INITRD允许用户向内核提供原始的initrd映像。
+The syntax is slightly different, the address of the initrd must be augmented by it's size, in the following format: "<initrd addres>:<initrd size>".
+语法略有不同，initrd的地址必须通过其大小增加，格式如下：“ <initrd addres>：<initrd size>”。
 
 Standalone HOWTO:
 =================
@@ -4129,20 +4066,19 @@ Hit 'q':
 
 Minicom warning:
 ================
-
-Over time, many people have reported problems when trying to use the
-"minicom" terminal emulation program for serial download. I (wd)
-consider minicom to be broken, and recommend not to use it. Under
-Unix, I recommend to use C-Kermit for general purpose use (and
-especially for kermit binary protocol download ("loadb" command), and
-use "cu" for S-Record download ("loads" command).  See
+Over time, many people have reported problems when trying to use the "minicom" terminal emulation program for serial download.
+随着时间的流逝，许多人报告了尝试使用“ minicom”终端仿真程序进行串行下载时遇到的问题。
+I (wd) consider minicom to be broken, and recommend not to use it. 
+我（wd）认为minicom坏了，建议不要使用它。
+Under Unix, I recommend to use C-Kermit for general purpose use (and especially for kermit binary protocol download ("loadb" command), and use "cu" for S-Record download ("loads" command).  
+在Unix下，我建议将C-Kermit用于一般用途（尤其是用于kermit二进制协议下载（“ loadb”命令），并使用“ cu”进行S-Record下载（“ loads”命令）。
+See
 http://www.denx.de/wiki/view/DULG/SystemSetup#Section_4.3.
 for help with kermit.
 
 
-Nevertheless, if you absolutely want to use it try adding this
-configuration to your "File transfer protocols" section:
-
+Nevertheless, if you absolutely want to use it try adding this configuration to your "File transfer protocols" section:
+但是，如果绝对要使用它，请尝试将此配置添加到“文件传输协议”部分：
 	   Name	   Program			Name U/D FullScr IO-Red. Multi
 	X  kermit  /usr/bin/kermit -i -l %l -s	 Y    U	   Y	   N	  N
 	Y  kermit  /usr/bin/kermit -i -l %l -r	 N    D	   Y	   N	  N
