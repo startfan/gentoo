@@ -4,18 +4,16 @@ Generic SPL framework
 Overview
 --------
 
-To unify all existing implementations for a secondary program loader (SPL)
-and to allow simply adding of new implementations this generic SPL framework
-has been created. With this framework almost all source files for a board
-can be reused. No code duplication or symlinking is necessary anymore.
-
+To unify all existing implementations for a secondary program loader (SPL) and to allow simply adding of new implementations this generic SPL framework has been created. 
+为了统一辅助程序加载器（SPL）的所有现有实现，并允许简单地添加新的实现，已创建了该通用SPL框架。
+With this framework almost all source files for a board can be reused. No code duplication or symlinking is necessary anymore.
+有了这个框架，板子的几乎所有源文件都可以重用。不再需要代码重复或符号链接。
 
 How it works
 ------------
 
 The object files for SPL are built separately and placed in the "spl" directory.
-The final binaries which are generated are u-boot-spl, u-boot-spl.bin and
-u-boot-spl.map.
+The final binaries which are generated are u-boot-spl, u-boot-spl.bin and u-boot-spl.map.
 
 A config option named CONFIG_SPL_BUILD is enabled by Kconfig for SPL.
 Source files can therefore be compiled for SPL with different settings.
